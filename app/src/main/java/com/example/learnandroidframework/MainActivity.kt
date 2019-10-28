@@ -50,16 +50,17 @@ class MainActivity : AppCompatActivity() {
         }
         queryContentProvider.setOnClickListener {
             val cursor = contentResolver.query(
-                Uri.parse("com.example.provider"),
+                Uri.parse("content://com.example.provider"),
                 arrayOf("text"),
                 null,
                 null,
                 null
             )
             cursor?.apply {
+                moveToFirst()
                 val text = this.getString(getColumnIndex("text"))
                 Toast.makeText(this@MainActivity, text, Toast.LENGTH_SHORT).show()
-                cursor.close()
+                close()
             }
         }
     }
