@@ -9,7 +9,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.IBinder
 import android.provider.Settings
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
@@ -46,7 +46,10 @@ class MainActivity : AppCompatActivity() {
             bindService(Intent(this, MainService::class.java), conn, Context.BIND_AUTO_CREATE)
         }
         sendBroadcast.setOnClickListener {
-            sendBroadcast(Intent(this, MainBroadcastReceiver::class.java))
+            sendBroadcast(
+                Intent(this, MainBroadcastReceiver::class.java)
+                    .putExtra("text", "test")
+            )
         }
         queryContentProvider.setOnClickListener {
             val cursor = contentResolver.query(

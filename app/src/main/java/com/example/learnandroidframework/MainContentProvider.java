@@ -3,12 +3,10 @@ package com.example.learnandroidframework;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.CursorWrapper;
 import android.database.MatrixCursor;
-import android.database.MergeCursor;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Created by mmw on 2019/10/28.
