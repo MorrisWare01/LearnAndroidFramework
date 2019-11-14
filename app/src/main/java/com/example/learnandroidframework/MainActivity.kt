@@ -46,7 +46,10 @@ class MainActivity : AppCompatActivity() {
             bindService(Intent(this, MainService::class.java), conn, Context.BIND_AUTO_CREATE)
         }
         sendBroadcast.setOnClickListener {
-            sendBroadcast(Intent(this, MainBroadcastReceiver::class.java))
+            sendBroadcast(
+                Intent(this, MainBroadcastReceiver::class.java)
+                    .putExtra("text", "test")
+            )
         }
         queryContentProvider.setOnClickListener {
             val cursor = contentResolver.query(
