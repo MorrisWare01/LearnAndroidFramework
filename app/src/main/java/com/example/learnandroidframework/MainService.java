@@ -3,7 +3,7 @@ package com.example.learnandroidframework;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 /**
  * Created by mmw on 2019/10/28.
