@@ -22,7 +22,7 @@ import org.junit.runner.RunWith
  * Created by mmw on 2019/11/12.
  */
 @RunWith(AndroidJUnit4::class)
-class MainActivityTest {
+class MainActivityInstrumentedTest {
 
     @get:Rule
     val mainActivityRule = ActivityTestRule(MainActivity::class.java)

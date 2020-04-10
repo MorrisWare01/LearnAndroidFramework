@@ -6,7 +6,7 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    buildToolsVersion "29.0.0"
     defaultConfig {
         applicationId "com.example.learnandroidframework"
         minSdkVersion 18
@@ -21,10 +21,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources true
+            all {
+                jvmArgs '-noverify', '-Drobolectric.dependency.repo.url=http://nexus.morrisware.xyz/repository/maven-public/'
+            }
+        }
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -34,5 +43,19 @@ dependencies {
     androidTestImplementation "androidx.test:rules:1.2.0"
     androidTestImplementation "androidx.test.ext:junit:1.1.1"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.2.0"
+    androidTestImplementation "androidx.test.espresso.idling:idling-net:3.2.0"
     androidTestImplementation "androidx.test.uiautomator:uiautomator:2.2.0"
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.23.4'
+    testImplementation "org.robolectric:robolectric:4.3.1"
+//    testImplementation 'org.robolectric:shadows-multidex:4.1'
+//    testImplementation 'org.robolectric:shadows-supportv4:4.1'
+    testImplementation "androidx.test:core:1.2.0"
+    testImplementation "androidx.test:runner:1.2.0"
+    testImplementation "androidx.test.ext:junit:1.1.1"
+    testImplementation "androidx.test.espresso:espresso-intents:3.2.0"
+    testImplementation "androidx.test.espresso:espresso-core:3.2.0"
+    testImplementation "androidx.test.ext:truth:1.2.0"
+
 }
