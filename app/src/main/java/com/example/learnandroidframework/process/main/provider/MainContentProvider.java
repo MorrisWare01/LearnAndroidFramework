@@ -1,4 +1,4 @@
-package com.example.learnandroidframework;
+package com.example.learnandroidframework.process.main.provider;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;

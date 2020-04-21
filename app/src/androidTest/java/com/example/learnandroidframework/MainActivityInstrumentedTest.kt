@@ -1,19 +1,12 @@
 package com.example.learnandroidframework
 
-import android.app.Activity
-import android.app.Instrumentation
-import android.content.Intent
-import android.util.Log
-import android.view.View
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,7 +18,7 @@ import org.junit.runner.RunWith
 class MainActivityInstrumentedTest {
 
     @get:Rule
-    val mainActivityRule = ActivityTestRule(MainActivity::class.java)
+    val mainActivityRule = ActivityTestRule(SplashActivity::class.java)
 
     @Test
     fun test() {

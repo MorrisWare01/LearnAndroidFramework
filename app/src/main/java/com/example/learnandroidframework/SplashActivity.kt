@@ -9,12 +9,17 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.IBinder
 import android.provider.Settings
-import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.example.learnandroidframework.process.main.activity.NewTaskActivity
+import com.example.learnandroidframework.process.second.SecondActivity
+import com.example.learnandroidframework.process.main.activity.SingleInstanceActivity
+import com.example.learnandroidframework.process.main.receiver.MainBroadcastReceiver
+import com.example.learnandroidframework.process.main.service.MainService
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class SplashActivity : AppCompatActivity() {
 
     private var isBound = false
     private val conn = object : ServiceConnection {
@@ -25,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             isBound = true
             val mainService = service as MainService.IMainService
-            Toast.makeText(this@MainActivity, mainService.test(), Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@SplashActivity, mainService.test(), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -33,11 +38,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Log.d("MAIN", getAndroidId().toString())
-        startActivity.setOnClickListener {
-            startActivity(Intent(this, SecondActivity::class.java))
-        }
-        startActivityResult.setOnClickListener {
-            startActivityForResult(Intent(this, SecondActivity::class.java), 10)
+        startActivityTest.setOnClickListener {
+            startActivity(Intent(this, ActivityTestActivity::class.java))
         }
         startService.setOnClickListener {
             startService(Intent(this, MainService::class.java))
@@ -62,7 +64,7 @@ class MainActivity : AppCompatActivity() {
             cursor?.apply {
                 moveToFirst()
                 val text = this.getString(getColumnIndex("text"))
-                Toast.makeText(this@MainActivity, text, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@SplashActivity, text, Toast.LENGTH_SHORT).show()
                 close()
             }
         }

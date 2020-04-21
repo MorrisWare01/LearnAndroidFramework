@@ -1,4 +1,4 @@
-package com.example.learnandroidframework;
+package com.example.learnandroidframework.process.main.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

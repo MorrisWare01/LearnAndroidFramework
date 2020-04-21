@@ -8,10 +8,10 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.learnandroidframework.process.second.SecondActivity
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.util.inject.Injector
 
 /**
  * Created by mmw on 2019/12/23.
@@ -20,7 +20,7 @@ import org.robolectric.util.inject.Injector
 class MainActivityTest {
 
     @get:Rule
-    val mainActivity = IntentsTestRule(MainActivity::class.java)
+    val mainActivity = IntentsTestRule(SplashActivity::class.java)
 
     @Test
     fun testInjector() {
