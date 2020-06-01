@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
 import com.example.learnandroidframework.process.main.activity.NewTaskActivity
+import com.example.learnandroidframework.process.main.activity.SaveInstanceTestActivity
 import com.example.learnandroidframework.process.main.activity.SingleInstanceActivity
 import com.example.learnandroidframework.process.second.SecondActivity
 import kotlinx.android.synthetic.main.activity_activity_test.*
@@ -40,6 +41,9 @@ class ActivityTestActivity : AppCompatActivity() {
 //            intent.data = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
             intent.data = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             startActivity(intent)
+        }
+        startSaveInstanceActivity.setOnClickListener {
+            startActivity(Intent(this, SaveInstanceTestActivity::class.java))
         }
     }
 

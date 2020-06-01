@@ -12,6 +12,7 @@ import com.example.learnandroidframework.process.second.SecondActivity
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.io.File
 
 /**
  * Created by mmw on 2019/12/23.
@@ -32,7 +33,7 @@ class MainActivityTest {
     @Test
     fun test() {
         AndroidJUnit4::class.java.classLoader
-        onView(withId(R.id.startActivity)).perform(click())
+//        onView(withId(R.id.startActivity)).perform(click())
         intended(
             hasComponent(
                 ComponentName(
