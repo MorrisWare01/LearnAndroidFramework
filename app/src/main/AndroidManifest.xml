@@ -5,7 +5,9 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    
+
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -40,9 +42,10 @@
         <activity android:name=".fragment.FragmentTestActivity" />
         <activity android:name=".fragment.NavigationTestActivity" />
         <activity android:name=".provider.ProviderTestActivity" />
+        <activity android:name=".receiver.BroadcastReceiverTestActivity" />
 
         <service android:name="com.example.learnandroidframework.process.main.service.MainService" />
-        <receiver android:name="com.example.learnandroidframework.process.main.receiver.MainBroadcastReceiver">
+        <receiver android:name=".receiver.MainBroadcastReceiver">
             <intent-filter>
                 <action android:name="com.example.receiver" />
             </intent-filter>

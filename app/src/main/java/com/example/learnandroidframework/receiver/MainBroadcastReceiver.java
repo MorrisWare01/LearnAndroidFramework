@@ -1,8 +1,9 @@
-package com.example.learnandroidframework.process.main.receiver;
+package com.example.learnandroidframework.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.SystemClock;
 import android.widget.Toast;
 
 /**
@@ -11,7 +12,7 @@ import android.widget.Toast;
 public class MainBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        final String text = intent.getStringExtra("text");
-        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+        SystemClock.sleep(3000);
+        Toast.makeText(context, "main broadcast receiver", Toast.LENGTH_SHORT).show();
     }
 }

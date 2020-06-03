@@ -27,10 +27,10 @@
             android:text="bindService" />
 
         <Button
-            android:id="@+id/sendBroadcast"
+            android:id="@+id/broadcastTest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="sendBroadcast" />
+            android:text="broadcastTest" />
 
         <Button
             android:id="@+id/queryContentProvider"

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/sendComponentBroadcast"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="sendComponentBroadcast" />
+
+    <Button
+        android:id="@+id/sendRegisterBroadcast"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="sendRegisterBroadcast" />
+
+    <Button
+        android:id="@+id/sendOrderBroadcast"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="sendOrderBroadcast" />
+
+    <Button
+        android:id="@+id/sendStickyBroadcast"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="sendStickyBroadcast" />
+
+    <Button
+        android:id="@+id/registerBroadcast"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="registerBroadcast" />
+
+
+</LinearLayout>

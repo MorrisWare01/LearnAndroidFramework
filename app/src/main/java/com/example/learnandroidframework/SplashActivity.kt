@@ -8,7 +8,6 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.os.IBinder
 import android.provider.Settings
 import android.util.Log
@@ -20,9 +19,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.example.learnandroidframework.fragment.FragmentTestActivity
 import com.example.learnandroidframework.fragment.NavigationTestActivity
-import com.example.learnandroidframework.process.main.receiver.MainBroadcastReceiver
+import com.example.learnandroidframework.receiver.MainBroadcastReceiver
 import com.example.learnandroidframework.process.main.service.MainService
-import com.example.learnandroidframework.provider.ProviderTestActivity
+import com.example.learnandroidframework.receiver.BroadcastReceiverTestActivity
 import com.example.learnandroidframework.view.ViewActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
@@ -55,11 +54,8 @@ class SplashActivity : AppCompatActivity() {
         bindService.setOnClickListener {
             bindService(Intent(this, MainService::class.java), conn, Context.BIND_AUTO_CREATE)
         }
-        sendBroadcast.setOnClickListener {
-            sendBroadcast(
-                Intent(this, MainBroadcastReceiver::class.java)
-                    .putExtra("text", "test")
-            )
+        broadcastTest.setOnClickListener {
+            startActivity(Intent(this, BroadcastReceiverTestActivity::class.java))
         }
         queryContentProvider.setOnClickListener {
             val cursor = contentResolver.query(
@@ -126,6 +122,7 @@ class SplashActivity : AppCompatActivity() {
                 Toast.makeText(this, "not exist", Toast.LENGTH_SHORT).show()
             }
         }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
