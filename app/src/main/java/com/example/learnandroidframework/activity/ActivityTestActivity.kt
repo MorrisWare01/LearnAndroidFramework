@@ -1,13 +1,14 @@
-package com.example.learnandroidframework
+package com.example.learnandroidframework.activity
 
 import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
-import com.example.learnandroidframework.process.main.activity.NewTaskActivity
-import com.example.learnandroidframework.process.main.activity.SaveInstanceTestActivity
-import com.example.learnandroidframework.process.main.activity.SingleInstanceActivity
-import com.example.learnandroidframework.process.second.SecondActivity
+import com.example.learnandroidframework.R
+import com.example.learnandroidframework.activity.main.NewTaskActivity
+import com.example.learnandroidframework.activity.main.SaveInstanceTestActivity
+import com.example.learnandroidframework.activity.main.SingleInstanceActivity
+import com.example.learnandroidframework.activity.second.SecondActivity
 import kotlinx.android.synthetic.main.activity_activity_test.*
 
 /**

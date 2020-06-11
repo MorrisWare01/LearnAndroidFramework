@@ -1,4 +1,4 @@
-package com.example.learnandroidframework.process.main.activity
+package com.example.learnandroidframework.activity.main
 
 import android.os.Bundle
 import android.os.PersistableBundle

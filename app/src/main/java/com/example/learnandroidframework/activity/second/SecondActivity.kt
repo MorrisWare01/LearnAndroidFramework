@@ -1,4 +1,4 @@
-package com.example.learnandroidframework.process.second
+package com.example.learnandroidframework.activity.second
 
 import android.content.Intent
 import android.os.Bundle

@@ -17,29 +17,18 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import com.example.learnandroidframework.activity.ActivityTestActivity
 import com.example.learnandroidframework.fragment.FragmentTestActivity
 import com.example.learnandroidframework.fragment.NavigationTestActivity
-import com.example.learnandroidframework.receiver.MainBroadcastReceiver
-import com.example.learnandroidframework.process.main.service.MainService
+import com.example.learnandroidframework.provider.ProviderTestActivity
+import com.example.learnandroidframework.service.MainService
 import com.example.learnandroidframework.receiver.BroadcastReceiverTestActivity
+import com.example.learnandroidframework.service.ServiceTestActivity
 import com.example.learnandroidframework.view.ViewActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 
 class SplashActivity : AppCompatActivity() {
-
-    private var isBound = false
-    private val conn = object : ServiceConnection {
-        override fun onServiceDisconnected(name: ComponentName?) {
-            isBound = false
-        }
-
-        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            isBound = true
-            val mainService = service as MainService.IMainService
-            Toast.makeText(this@SplashActivity, mainService.test(), Toast.LENGTH_SHORT).show()
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,29 +37,14 @@ class SplashActivity : AppCompatActivity() {
         startActivityTest.setOnClickListener {
             startActivity(Intent(this, ActivityTestActivity::class.java))
         }
-        startService.setOnClickListener {
-            startService(Intent(this, MainService::class.java))
-        }
-        bindService.setOnClickListener {
-            bindService(Intent(this, MainService::class.java), conn, Context.BIND_AUTO_CREATE)
+        serviceTest.setOnClickListener {
+            startActivity(Intent(this, ServiceTestActivity::class.java))
         }
         broadcastTest.setOnClickListener {
             startActivity(Intent(this, BroadcastReceiverTestActivity::class.java))
         }
-        queryContentProvider.setOnClickListener {
-            val cursor = contentResolver.query(
-                Uri.parse("content://com.example.provider"),
-                arrayOf("text"),
-                null,
-                null,
-                null
-            )
-            cursor?.apply {
-                moveToFirst()
-                val text = this.getString(getColumnIndex("text"))
-                Toast.makeText(this@SplashActivity, text, Toast.LENGTH_SHORT).show()
-                close()
-            }
+        providerTest.setOnClickListener {
+            startActivity(Intent(this, ProviderTestActivity::class.java))
         }
         showToastWindow.setOnClickListener {
             Toast.makeText(this, "toast window", Toast.LENGTH_LONG).show()
@@ -92,51 +66,6 @@ class SplashActivity : AppCompatActivity() {
         startNavigationTestActivity.setOnClickListener {
             startActivity(Intent(this, NavigationTestActivity::class.java))
         }
-        installApk.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW)
-            val file = File(getExternalFilesDir("Download"), "demo.apk")
-            if (file.exists()) {
-                val uri = FileProvider.getUriForFile(this, packageName, file)
-                intent.setDataAndType(uri, "application/vnd.android.package-archive")
-//                grantUriPermission(
-//                    "com.google.android.packageinstaller",
-//                    uri,
-//                    Intent.FLAG_GRANT_READ_URI_PERMISSION
-//                )
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                startActivityForResult(intent, 10)
-            } else {
-                Toast.makeText(this, "not exist", Toast.LENGTH_SHORT).show()
-            }
-        }
-        startProviderTest.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW)
-            val file = File(getExternalFilesDir("Download"), "demo.apk")
-            if (file.exists()) {
-                val uri = FileProvider.getUriForFile(this, packageName, file)
-                intent.setDataAndType(uri, "application/vnd.android.package-archive")
-//                grantUriPermission("com.google.android.packageinstaller", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-//                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                startActivityForResult(intent, 10)
-            } else {
-                Toast.makeText(this, "not exist", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 10) {
-            Log.d("TAG", "resultCode=${resultCode} data=${data}")
-        }
-    }
-
-    override fun onDestroy() {
-        if (isBound) {
-            unbindService(conn)
-        }
-        super.onDestroy()
     }
 
     @SuppressLint("HardwareIds")

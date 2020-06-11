@@ -8,6 +8,8 @@
 
     <uses-permission android:name="android.permission.BROADCAST_STICKY" />
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -22,29 +24,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ActivityTestActivity" />
+        <activity android:name=".activity.ActivityTestActivity" />
 
         <activity
-            android:name="com.example.learnandroidframework.process.second.SecondActivity"
+            android:name="com.example.learnandroidframework.activity.second.SecondActivity"
             android:process=":second" />
         <activity
-            android:name="com.example.learnandroidframework.process.main.activity.NewTaskActivity"
+            android:name="com.example.learnandroidframework.activity.main.NewTaskActivity"
             android:taskAffinity=":newTask" />
         <activity
-            android:name="com.example.learnandroidframework.process.main.activity.SingleInstanceActivity"
+            android:name="com.example.learnandroidframework.activity.main.SingleInstanceActivity"
             android:launchMode="singleInstance" />
         <activity
-            android:name="com.example.learnandroidframework.process.main.activity.SingleInstance1Activity"
+            android:name="com.example.learnandroidframework.activity.main.SingleInstance1Activity"
             android:launchMode="singleInstance" />
         <activity android:name=".view.ViewActivity" />
-        <activity android:name=".process.main.activity.SaveInstanceTestActivity" />
+        <activity android:name="com.example.learnandroidframework.activity.main.SaveInstanceTestActivity" />
         <activity android:name=".TestSplashActivity" />
         <activity android:name=".fragment.FragmentTestActivity" />
         <activity android:name=".fragment.NavigationTestActivity" />
         <activity android:name=".provider.ProviderTestActivity" />
         <activity android:name=".receiver.BroadcastReceiverTestActivity" />
+        <activity android:name=".service.ServiceTestActivity" />
 
-        <service android:name="com.example.learnandroidframework.process.main.service.MainService" />
+        <service android:name=".service.MainService" />
+
         <receiver android:name=".receiver.MainBroadcastReceiver">
             <intent-filter>
                 <action android:name="com.example.receiver" />

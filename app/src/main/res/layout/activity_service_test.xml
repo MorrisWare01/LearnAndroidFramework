@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/startService"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="startService" />
+
+    <Button
+        android:id="@+id/stopService"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="stopService" />
+
+    <Button
+        android:id="@+id/bindService"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="bindService" />
+
+    <Button
+        android:id="@+id/bindServiceNotAutoCreate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="bindServiceNotAutoCreate" />
+
+    <Button
+        android:id="@+id/unbindService"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="unbindService" />
+
+    <Button
+        android:id="@+id/startForegroundService"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="startForegroundService" />
+
+    <Button
+        android:id="@+id/startForeground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="startForeground" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="shouldStartForeground: " />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ms" />
+
+    </LinearLayout>
+
+</LinearLayout>

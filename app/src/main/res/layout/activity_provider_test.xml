@@ -10,4 +10,23 @@
         android:layout_height="wrap_content"
         android:text="查询" />
 
+    <Button
+        android:id="@+id/queryContentProvider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="queryContentProvider" />
+
+    <Button
+        android:id="@+id/installApk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="installApk" />
+
+    <Button
+        android:id="@+id/startProviderTest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="providerTest" />
+
+
 </LinearLayout>

@@ -1,18 +1,14 @@
 package com.example.learnandroidframework
 
 import android.content.ComponentName
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.intent.rule.IntentsTestRule
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.learnandroidframework.process.second.SecondActivity
+import com.example.learnandroidframework.activity.second.SecondActivity
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.io.File
 
 /**
  * Created by mmw on 2019/12/23.

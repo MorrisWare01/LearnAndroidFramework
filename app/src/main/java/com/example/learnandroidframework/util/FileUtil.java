@@ -1,4 +1,4 @@
-package com.example.learnandroidframework;
+package com.example.learnandroidframework.util;
 
 import android.content.Context;
 

@@ -15,16 +15,10 @@
             android:text="startActivityTest" />
 
         <Button
-            android:id="@+id/startService"
+            android:id="@+id/serviceTest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="startService" />
-
-        <Button
-            android:id="@+id/bindService"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="bindService" />
+            android:text="serviceTest" />
 
         <Button
             android:id="@+id/broadcastTest"
@@ -33,10 +27,10 @@
             android:text="broadcastTest" />
 
         <Button
-            android:id="@+id/queryContentProvider"
+            android:id="@+id/providerTest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="queryContentProvider" />
+            android:text="providerTest" />
 
         <Button
             android:id="@+id/showToastWindow"
@@ -67,18 +61,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="startNavigationTestActivity" />
-
-        <Button
-            android:id="@+id/installApk"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="installApk" />
-
-        <Button
-            android:id="@+id/startProviderTest"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="providerTest" />
 
     </LinearLayout>
 </ScrollView>
