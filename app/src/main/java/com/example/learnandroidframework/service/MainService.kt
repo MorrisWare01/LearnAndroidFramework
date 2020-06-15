@@ -65,4 +65,6 @@ class MainService : Service() {
             startForeground(1, NotificationCompat.Builder(baseContext, channelId).build())
         }
     }
+
+//    inner class TransferInterface: ITran
 }

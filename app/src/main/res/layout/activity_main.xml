@@ -33,6 +33,12 @@
             android:text="providerTest" />
 
         <Button
+            android:id="@+id/sharedPreferenceTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="sharedPreferenceTest" />
+
+        <Button
             android:id="@+id/showToastWindow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,6 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="startNavigationTestActivity" />
+
 
     </LinearLayout>
 </ScrollView>

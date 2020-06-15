@@ -24,6 +24,7 @@ import com.example.learnandroidframework.provider.ProviderTestActivity
 import com.example.learnandroidframework.service.MainService
 import com.example.learnandroidframework.receiver.BroadcastReceiverTestActivity
 import com.example.learnandroidframework.service.ServiceTestActivity
+import com.example.learnandroidframework.sharedpreference.SharedPreferenceTestActivity
 import com.example.learnandroidframework.view.ViewActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
@@ -45,6 +46,9 @@ class SplashActivity : AppCompatActivity() {
         }
         providerTest.setOnClickListener {
             startActivity(Intent(this, ProviderTestActivity::class.java))
+        }
+        sharedPreferenceTest.setOnClickListener {
+            startActivity(Intent(this, SharedPreferenceTestActivity::class.java))
         }
         showToastWindow.setOnClickListener {
             Toast.makeText(this, "toast window", Toast.LENGTH_LONG).show()

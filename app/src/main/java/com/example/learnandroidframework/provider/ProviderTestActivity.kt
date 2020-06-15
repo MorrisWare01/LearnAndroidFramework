@@ -1,5 +1,7 @@
 package com.example.learnandroidframework.provider
 
+import android.content.ContentProvider
+import android.content.ContentResolver
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -31,7 +33,10 @@ class ProviderTestActivity : AppCompatActivity() {
         }
         queryContentProvider.setOnClickListener {
             val cursor = contentResolver.query(
-                Uri.parse("content://com.example.provider"),
+                Uri.Builder()
+                    .scheme(ContentResolver.SCHEME_CONTENT)
+                    .authority(MainContentProvider.queryAuthority(this))
+                    .build(),
                 arrayOf("text"),
                 null,
                 null,
