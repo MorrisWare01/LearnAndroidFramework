@@ -44,6 +44,7 @@ class ServiceTestActivity : AppCompatActivity() {
     private var isAidlBound = false
     private var aidlConn = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {
+            Log.d("TAG", "aidl onServiceDisconnected")
             isAidlBound = false
         }
 
@@ -61,6 +62,7 @@ class ServiceTestActivity : AppCompatActivity() {
     private var isOtherAidlBound = false
     private var otherAidlConn = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {
+            Log.d("TAG", "aidl onServiceDisconnected other")
             isOtherAidlBound = false
         }
 
@@ -114,11 +116,10 @@ class ServiceTestActivity : AppCompatActivity() {
                 handler.removeCallbacksAndMessages(null)
             }
         }
+        startAidlService.setOnClickListener {
+            startService(Intent(this, AidlService::class.java))
+        }
         bindAidlService.setOnClickListener {
-//            if (isAidlBound) {
-//                isAidlBound = false
-//                unbindService(aidlConn)
-//            }
             bindService(Intent(this, AidlService::class.java), aidlConn, Context.BIND_AUTO_CREATE)
         }
         bindAidlServiceOther.setOnClickListener {
@@ -129,7 +130,19 @@ class ServiceTestActivity : AppCompatActivity() {
             )
         }
         stopAidlService.setOnClickListener {
-            stopService(Intent(this, AidlService::class.java))
+            if (isAidlBound || isOtherAidlBound) {
+                if (isAidlBound) {
+                    isAidlBound = false
+                    unbindService(aidlConn)
+                }
+                if (isOtherAidlBound) {
+                    isOtherAidlBound = false
+                    unbindService(otherAidlConn)
+                }
+            } else {
+                // 当有service被绑定时无法stopService
+                stopService(Intent(this, AidlService::class.java))
+            }
         }
     }
 

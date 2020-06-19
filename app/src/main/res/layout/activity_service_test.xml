@@ -69,6 +69,12 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/startAidlService"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="start aidl service" />
+
+    <Button
         android:id="@+id/bindAidlService"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

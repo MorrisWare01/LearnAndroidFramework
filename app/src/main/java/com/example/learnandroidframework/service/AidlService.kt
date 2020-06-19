@@ -22,6 +22,11 @@ class AidlService : Service() {
         return super.onStartCommand(intent, flags, startId)
     }
 
+    override fun onDestroy() {
+        Log.d("TAG", "aidl service destroy")
+        super.onDestroy()
+    }
+
     class TransferInterface(private val func: () -> Unit) : IMyAidlInterface.Stub() {
 
         private var mRemote: IBinder? = null
