@@ -76,12 +76,6 @@ public class MainContentProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Bundle call(@NonNull String authority, @NonNull String method, @Nullable String arg, @Nullable Bundle extras) {
-        return super.call(authority, method, arg, extras);
-    }
-
-    @Nullable
-    @Override
     public ParcelFileDescriptor openFile(@NonNull Uri uri, @NonNull String mode) throws FileNotFoundException {
         return super.openFile(uri, mode);
     }

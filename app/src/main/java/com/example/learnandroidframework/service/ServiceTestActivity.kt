@@ -12,6 +12,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.example.learnandroidframework.IMyAidlInterface
 import com.example.learnandroidframework.R
 import kotlinx.android.synthetic.main.activity_service_test.*
 
@@ -20,6 +21,9 @@ import kotlinx.android.synthetic.main.activity_service_test.*
  * @date 2020/6/3
  **/
 class ServiceTestActivity : AppCompatActivity() {
+
+    private val handler = Handler()
+    private var startForegroundTime = 0L
 
     private var isBound = false
     private var mainService: MainService.IMainService? = null
@@ -37,8 +41,40 @@ class ServiceTestActivity : AppCompatActivity() {
         }
     }
 
-    private val handler = Handler()
-    private var startForegroundTime = 0L
+    private var isAidlBound = false
+    private var aidlConn = object : ServiceConnection {
+        override fun onServiceDisconnected(name: ComponentName?) {
+            isAidlBound = false
+        }
+
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            isAidlBound = true
+            IMyAidlInterface.Stub.asInterface(service)?.apply {
+                ring()
+                publishBinder(AidlService.TransferInterface {
+                    Log.d("TAG", "service test activity ring")
+                })
+            }
+        }
+    }
+
+    private var isOtherAidlBound = false
+    private var otherAidlConn = object : ServiceConnection {
+        override fun onServiceDisconnected(name: ComponentName?) {
+            isOtherAidlBound = false
+        }
+
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            isOtherAidlBound = true
+            IMyAidlInterface.Stub.asInterface(service)?.apply {
+                ring()
+                publishBinder(AidlService.TransferInterface {
+                    Log.d("TAG", "service test activity other ring")
+                })
+            }
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,12 +114,35 @@ class ServiceTestActivity : AppCompatActivity() {
                 handler.removeCallbacksAndMessages(null)
             }
         }
+        bindAidlService.setOnClickListener {
+//            if (isAidlBound) {
+//                isAidlBound = false
+//                unbindService(aidlConn)
+//            }
+            bindService(Intent(this, AidlService::class.java), aidlConn, Context.BIND_AUTO_CREATE)
+        }
+        bindAidlServiceOther.setOnClickListener {
+            bindService(
+                Intent(this, AidlService::class.java),
+                otherAidlConn,
+                Context.BIND_AUTO_CREATE
+            )
+        }
+        stopAidlService.setOnClickListener {
+            stopService(Intent(this, AidlService::class.java))
+        }
     }
 
     override fun onDestroy() {
         handler.removeCallbacksAndMessages(null)
         if (isBound) {
             unbindService(conn)
+        }
+        if (isAidlBound) {
+            unbindService(aidlConn)
+        }
+        if (isOtherAidlBound) {
+            unbindService(otherAidlConn)
         }
         super.onDestroy()
     }

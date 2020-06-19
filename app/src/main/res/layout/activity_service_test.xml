@@ -68,4 +68,22 @@
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/bindAidlService"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="bind aidl service" />
+
+    <Button
+        android:id="@+id/bindAidlServiceOther"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="bind aidl service other" />
+
+    <Button
+        android:id="@+id/stopAidlService"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="stop aidl service" />
+
 </LinearLayout>
