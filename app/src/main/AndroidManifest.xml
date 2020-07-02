@@ -47,6 +47,31 @@
         <activity android:name=".receiver.BroadcastReceiverTestActivity" />
         <activity android:name=".service.ServiceTestActivity" />
         <activity android:name=".sharedpreference.SharedPreferenceTestActivity" />
+        <activity android:name=".moblink.MobLinkActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="test"
+                    android:scheme="page" />
+            </intent-filter>
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="80gm.t4m.cn"
+                    android:scheme="http" />
+                <data
+                    android:host="80gm.t4m.cn"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
 
         <service android:name=".service.MainService" />
         <service android:name=".service.AidlService" />

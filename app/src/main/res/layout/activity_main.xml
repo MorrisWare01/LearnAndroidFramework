@@ -12,31 +12,43 @@
             android:id="@+id/startActivityTest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="startActivityTest" />
+            android:text="Activity Test" />
 
         <Button
             android:id="@+id/serviceTest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="serviceTest" />
+            android:text="service Test" />
 
         <Button
             android:id="@+id/broadcastTest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="broadcastTest" />
+            android:text="broadcast Test" />
 
         <Button
             android:id="@+id/providerTest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="providerTest" />
+            android:text="provider Test" />
 
         <Button
             android:id="@+id/sharedPreferenceTest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="sharedPreferenceTest" />
+            android:text="sharedPreference Test" />
+
+        <Button
+            android:id="@+id/startViewActivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="view test" />
+
+        <Button
+            android:id="@+id/binderTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="binder test" />
 
         <Button
             android:id="@+id/showToastWindow"
@@ -50,11 +62,6 @@
             android:layout_height="wrap_content"
             android:text="showDialogWindow" />
 
-        <Button
-            android:id="@+id/startViewActivity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="startViewActivity" />
 
         <Button
             android:id="@+id/startFragmentTestActivity"
@@ -67,6 +74,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="startNavigationTestActivity" />
+
+        <Button
+            android:id="@+id/mobLinkTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="MOBLINK TEST" />
 
 
     </LinearLayout>

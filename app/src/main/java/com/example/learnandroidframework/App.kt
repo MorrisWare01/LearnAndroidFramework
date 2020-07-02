@@ -8,6 +8,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Process
 import android.util.Log
+import com.example.learnandroidframework.moblink.MobLinkActivity
+import com.mob.MobSDK
+import com.mob.moblink.MobLink
+import com.mob.moblink.RestoreSceneListener
+import com.mob.moblink.Scene
+
 
 /**
  * @author mmw
@@ -15,10 +21,17 @@ import android.util.Log
  **/
 class App : Application() {
 
+    companion object {
+        var mMobLinkScene: Scene? = null
+    }
+
     override fun onCreate() {
         super.onCreate()
         Log.d("App", "onCreate:${getCurrentProcessName()}")
         registerActivityLifecycleCallbacks(MyActivityLifecycleCallback())
+
+        MobSDK.init(this)
+        MobLink.setRestoreSceneListener(SceneListener())
     }
 
     private fun getCurrentProcessName(): String? {
@@ -29,6 +42,20 @@ class App : Application() {
             }
         }
         return null
+    }
+
+    internal inner class SceneListener : RestoreSceneListener {
+        override fun willRestoreScene(scene: Scene): Class<out Activity>? {
+            Log.d("TAG", "willRestoreScene:${scene.path}")
+            mMobLinkScene = scene
+            return MobLinkActivity::class.java
+        }
+
+        override fun notFoundScene(scene: Scene) {
+        }
+
+        override fun completeRestore(scene: Scene) {
+        }
     }
 
     class MyActivityLifecycleCallback : ActivityLifecycleCallbacks {
