@@ -1,13 +1,14 @@
 package com.example.learnandroidframework.activity
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.learnandroidframework.R
-import com.example.learnandroidframework.activity.main.NewTaskActivity
-import com.example.learnandroidframework.activity.main.SaveInstanceTestActivity
-import com.example.learnandroidframework.activity.main.SingleInstanceActivity
+import com.example.learnandroidframework.SplashActivity
+import com.example.learnandroidframework.activity.main.*
 import com.example.learnandroidframework.activity.second.SecondActivity
 import kotlinx.android.synthetic.main.activity_activity_test.*
 
@@ -22,6 +23,12 @@ class ActivityTestActivity : AppCompatActivity() {
         setContentView(R.layout.activity_activity_test)
         startActivityResult.setOnClickListener {
             startActivityForResult(Intent(this, SecondActivity::class.java), 10)
+        }
+        startSingleTopActivity.setOnClickListener {
+            startActivity(Intent(this, SingleTopActivity::class.java))
+        }
+        startSingleTaskActivity.setOnClickListener {
+            startActivity(Intent(this, SingleTaskActivity::class.java))
         }
         startSecondProcessActivity.setOnClickListener {
             startActivity(Intent(this, SecondActivity::class.java))
@@ -46,6 +53,22 @@ class ActivityTestActivity : AppCompatActivity() {
         startSaveInstanceActivity.setOnClickListener {
             startActivity(Intent(this, SaveInstanceTestActivity::class.java))
         }
+        startActivityByNewDocument.setOnClickListener {
+            startActivity(Intent(this, ActivityTestActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
+            })
+        }
+        startActivityByNewDocumentWithMulti.setOnClickListener {
+            startActivity(Intent(this, ActivityTestActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
+                addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
+            })
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        Log.d("TAG", "onNewIntent")
     }
 
 }

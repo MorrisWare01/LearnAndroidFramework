@@ -8,12 +8,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Process
 import android.util.Log
-import com.example.learnandroidframework.moblink.MobLinkActivity
-import com.mob.MobSDK
-import com.mob.moblink.MobLink
-import com.mob.moblink.RestoreSceneListener
-import com.mob.moblink.Scene
-
 
 /**
  * @author mmw
@@ -21,17 +15,10 @@ import com.mob.moblink.Scene
  **/
 class App : Application() {
 
-    companion object {
-        var mMobLinkScene: Scene? = null
-    }
-
     override fun onCreate() {
         super.onCreate()
         Log.d("App", "onCreate:${getCurrentProcessName()}")
         registerActivityLifecycleCallbacks(MyActivityLifecycleCallback())
-
-        MobSDK.init(this)
-        MobLink.setRestoreSceneListener(SceneListener())
     }
 
     private fun getCurrentProcessName(): String? {
@@ -44,20 +31,6 @@ class App : Application() {
         return null
     }
 
-    internal inner class SceneListener : RestoreSceneListener {
-        override fun willRestoreScene(scene: Scene): Class<out Activity>? {
-            Log.d("TAG", "willRestoreScene:${scene.path}")
-            mMobLinkScene = scene
-            return MobLinkActivity::class.java
-        }
-
-        override fun notFoundScene(scene: Scene) {
-        }
-
-        override fun completeRestore(scene: Scene) {
-        }
-    }
-
     class MyActivityLifecycleCallback : ActivityLifecycleCallbacks {
 
         private var isInited = false
@@ -67,24 +40,31 @@ class App : Application() {
                 isInited = true
                 activity.startActivity(Intent(activity, TestSplashActivity::class.java))
             }
+            Log.d("TAG", "${activity.componentName}: onActivityCreated")
         }
 
         override fun onActivityStarted(activity: Activity) {
+            Log.d("TAG", "${activity.componentName}onActivityStarted")
         }
 
         override fun onActivityResumed(activity: Activity) {
+            Log.d("TAG", "${activity.componentName}: onActivityResumed")
         }
 
         override fun onActivityPaused(activity: Activity) {
-        }
-
-        override fun onActivityDestroyed(activity: Activity) {
-        }
-
-        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
+            Log.d("TAG", "${activity.componentName}: onActivityPaused")
         }
 
         override fun onActivityStopped(activity: Activity) {
+            Log.d("TAG", "${activity.componentName}: onActivityStopped")
+        }
+
+        override fun onActivityDestroyed(activity: Activity) {
+            Log.d("TAG", "${activity.componentName}: onActivityDestroyed")
+        }
+
+        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
+            Log.d("TAG", "${activity.componentName}: onActivitySaveInstanceState")
         }
     }
 

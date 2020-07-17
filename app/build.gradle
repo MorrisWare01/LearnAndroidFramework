@@ -68,15 +68,3 @@ dependencies {
     testImplementation "androidx.test.ext:truth:1.2.0"
 
 }
-
-// 添加插件
-apply plugin: 'com.mob.sdk'
-// 在MobSDK的扩展中注册MobLink的相关信息
-MobSDK {
-    appKey "1fe9bd0412720"
-    appSecret "b6e3215a1a47ef20f98240a3ae4ea2e3"
-    MobLink {
-        uriScheme "test://page"
-        appLinkHost "80gm.t4m.cn"
-    }
-}

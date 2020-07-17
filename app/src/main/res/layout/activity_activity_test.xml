@@ -11,33 +11,57 @@
         android:text="startActivityResult" />
 
     <Button
-        android:id="@+id/startSecondProcessActivity"
+        android:id="@+id/startSingleTopActivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="startSecondProcessActivity" />
+        android:text="single top" />
+
+    <Button
+        android:id="@+id/startSingleTaskActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="single task" />
 
     <Button
         android:id="@+id/startSingleInstanceActivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="startSingleInstanceActivity" />
+        android:text="single instance" />
+
+    <Button
+        android:id="@+id/startSecondProcessActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="second process" />
 
     <Button
         android:id="@+id/startNewTaskActivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="startNewTaskActivity" />
+        android:text="task affinity" />
+
+    <Button
+        android:id="@+id/startSaveInstanceActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="save instance" />
+
+    <Button
+        android:id="@+id/startActivityByNewDocument"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="new document" />
+
+    <Button
+        android:id="@+id/startActivityByNewDocumentWithMulti"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="new document and multi task" />
 
     <Button
         android:id="@+id/startPickerActivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="startPickerActivity" />
-
-    <Button
-        android:id="@+id/startSaveInstanceActivity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="startSaveInstanceActivity" />
 
 </LinearLayout>
