@@ -15,10 +15,19 @@
             android:background="@drawable/cv">
 
             <ImageView
+                android:id="@+id/iv_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@mipmap/j9"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btn_start"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="start"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_header" />
 
             <com.example.learnandroidframework.view.ChessBoardView
                 android:id="@+id/chess_board"
@@ -26,18 +35,19 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <Button
+                android:id="@+id/btn_go"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="30dp"
+                android:text="跳跃"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 
-    <Button
-        android:id="@+id/btn_go"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginTop="30dp"
-        android:text="固定头"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

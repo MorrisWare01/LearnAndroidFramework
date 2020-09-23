@@ -28,21 +28,23 @@ class ViewActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_view)
 
-        val scrollView = findViewById<ScrollView>(R.id.scroll_view)
-        scrollView.viewTreeObserver.addOnGlobalLayoutListener(object :
-            ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                scrollView.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                // 滑动到底部
-                scrollView.fullScroll(ScrollView.FOCUS_DOWN)
-            }
-        })
+//        val scrollView = findViewById<ScrollView>(R.id.scroll_view)
+//        scrollView.viewTreeObserver.addOnGlobalLayoutListener(object :
+//            ViewTreeObserver.OnGlobalLayoutListener {
+//            override fun onGlobalLayout() {
+//                scrollView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+//                // 滑动到底部
+//                scrollView.fullScroll(ScrollView.FOCUS_DOWN)
+//            }
+//        })
 
         val chessBoardView = findViewById<ChessBoardView>(R.id.chess_board)
         findViewById<View>(R.id.btn_go).setOnClickListener {
-            chessBoardView.go();
+            chessBoardView.goTest()
         }
-
+        findViewById<View>(R.id.btn_start).setOnClickListener {
+            chessBoardView.gameGo()
+        }
     }
 
 }

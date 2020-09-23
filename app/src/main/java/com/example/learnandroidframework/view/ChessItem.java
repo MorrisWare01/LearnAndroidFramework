@@ -9,8 +9,6 @@ public class ChessItem {
 
     public Rect position;
 
-    public ChessItem next;
-
     public ChessItem(Rect position) {
         this.position = position;
     }
