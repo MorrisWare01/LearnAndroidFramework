@@ -2,6 +2,8 @@ package com.example.learnandroidframework.view;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -10,8 +12,11 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.FloatProperty;
 import android.util.Log;
+import android.util.Property;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 
 import androidx.annotation.Nullable;
 
@@ -34,6 +39,7 @@ public class ChessBoardView extends View {
     private Bitmap chessBoardBitmap;
     private Bitmap boardBitmap;
     private Bitmap playerBitmap;
+    private Bitmap testPlayerBitmap;
 
     private Paint mPaint;
     private Rect mBoardRect;
@@ -64,7 +70,8 @@ public class ChessBoardView extends View {
 
         chessBoardBitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.l1);
         boardBitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.l0);
-        playerBitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.jr);
+        playerBitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.player);
+        testPlayerBitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.jr);
 
         mBoardRect = new Rect(0, 0, boardBitmap.getWidth(), boardBitmap.getHeight());
 
@@ -169,7 +176,7 @@ public class ChessBoardView extends View {
         // 绘制玩家
         Rect position = player.chessItem.getPosition();
         canvas.translate(player.translateX, player.translateY);
-        canvas.translate(position.left + (position.width() - playerBitmap.getWidth()) / 2, position.top + playerBitmap.getHeight() / 2);
+        canvas.translate(position.left + (position.width() - playerBitmap.getWidth()) / 2, position.top + (position.height() - playerBitmap.getHeight()) / 6);
         canvas.scale(player.scaleX, player.scaleY, playerBitmap.getWidth() / 2, playerBitmap.getHeight());
         canvas.drawBitmap(playerBitmap, 0, 0, mPaint);
 
@@ -197,9 +204,9 @@ public class ChessBoardView extends View {
 
         canvas.save();
         canvas.translate(testPlayer.translateX, testPlayer.translateY);
-        canvas.translate(position.left + (position.width() - playerBitmap.getWidth()) / 2, position.top + playerBitmap.getHeight() / 2);
-        canvas.scale(testPlayer.scaleX, testPlayer.scaleY, playerBitmap.getWidth() / 2, playerBitmap.getHeight());
-        canvas.drawBitmap(playerBitmap, 0, 0, mPaint);
+        canvas.translate(position.left + (position.width() - testPlayerBitmap.getWidth()) / 2, position.top + testPlayerBitmap.getHeight() / 2);
+        canvas.scale(testPlayer.scaleX, testPlayer.scaleY, testPlayerBitmap.getWidth() / 2, testPlayerBitmap.getHeight());
+        canvas.drawBitmap(testPlayerBitmap, 0, 0, mPaint);
         canvas.restore();
     }
 
@@ -222,9 +229,9 @@ public class ChessBoardView extends View {
         final ChessItem chessItem = player.chessItem;
         final ChessItem nextChessItem = items.get((items.indexOf(chessItem) + 1) % items.size());
 
-        ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 1);
-        valueAnimator.setDuration(500);
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        ValueAnimator jumpUp = ValueAnimator.ofFloat(0, 0.5f);
+        jumpUp.setDuration(250);
+        jumpUp.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float animatedValue = (float) animation.getAnimatedValue();
@@ -243,7 +250,42 @@ public class ChessBoardView extends View {
                 invalidate();
             }
         });
-        valueAnimator.addListener(new AnimatorListenerAdapter() {
+
+        ValueAnimator jumpDown = ValueAnimator.ofFloat(0.5f, 1f);
+        jumpDown.setDuration(250);
+        jumpDown.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float animatedValue = (float) animation.getAnimatedValue();
+
+                float y0 = chessItem.position.top;
+                float y1 = nextChessItem.position.top;
+                float deltaY = y1 - y0 >= 0 ? dp2px(getContext(), 20) : Math.abs((y1 - y0)) + dp2px(getContext(), 20);
+                float y;
+                if (animatedValue < 0.5f) {
+                    y = (float) (y0 - deltaY * Math.sin(Math.PI * animatedValue));
+                } else {
+                    y = (float) (y1 - (y1 + deltaY - y0) * Math.sin(Math.PI * animatedValue));
+                }
+                player.translateX = (nextChessItem.position.left - chessItem.position.left) * animatedValue;
+                player.translateY = y - y0;
+                invalidate();
+            }
+        });
+
+        ObjectAnimator squash = ObjectAnimator.ofFloat(player, floatProperty, 0.6f).setDuration(100);
+        ObjectAnimator stretch = ObjectAnimator.ofFloat(player, floatProperty, 1.2f).setDuration(100);
+        ObjectAnimator scaleBack = ObjectAnimator.ofFloat(player, floatProperty, 1f).setDuration(100);
+
+        AnimatorSet jumpUpSet = new AnimatorSet();
+        jumpUpSet.playTogether(jumpUp, stretch);
+
+        AnimatorSet jumpDownSet = new AnimatorSet();
+        jumpDownSet.playTogether(jumpDown, scaleBack);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.setInterpolator(new LinearInterpolator());
+        animatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
@@ -269,6 +311,20 @@ public class ChessBoardView extends View {
                 player.isRunning = false;
             }
         });
-        valueAnimator.start();
+        animatorSet.playSequentially(squash, jumpUpSet, jumpDownSet);
+        animatorSet.start();
     }
+
+    final Property<ChessPlayer, Float> floatProperty = new Property<ChessPlayer, Float>(Float.class, "scaleY") {
+        @Override
+        public Float get(ChessPlayer object) {
+            return object.scaleY;
+        }
+
+        @Override
+        public void set(ChessPlayer object, Float value) {
+            object.scaleY = value;
+            invalidate();
+        }
+    };
 }
