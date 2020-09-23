@@ -158,28 +158,21 @@ public class ChessBoardView extends View {
     }
 
     private void drawGame(Canvas canvas) {
-        // 绘制棋盘
         canvas.save();
         canvas.translate((chessBoardWidth - 5 * mBoardRect.width()) / 2, dp2px(getContext(), 200));
+
+        // 绘制棋盘
         for (ChessItem item : items) {
             canvas.drawBitmap(boardBitmap, mBoardRect, item.getPosition(), mPaint);
         }
-        canvas.restore();
 
         // 绘制玩家
-        final ChessItem currentPlayerChess = player.chessItem;
-        if (currentPlayerChess == null) {
-            return;
-        }
-
-        Rect position = currentPlayerChess.getPosition();
-
-        canvas.save();
-        canvas.translate((chessBoardWidth - 5 * mBoardRect.width()) / 2, dp2px(getContext(), 200));
+        Rect position = player.chessItem.getPosition();
         canvas.translate(player.translateX, player.translateY);
         canvas.translate(position.left + (position.width() - playerBitmap.getWidth()) / 2, position.top + playerBitmap.getHeight() / 2);
         canvas.scale(player.scaleX, player.scaleY, playerBitmap.getWidth() / 2, playerBitmap.getHeight());
         canvas.drawBitmap(playerBitmap, 0, 0, mPaint);
+
         canvas.restore();
     }
 
@@ -238,7 +231,7 @@ public class ChessBoardView extends View {
 
                 float y0 = chessItem.position.top;
                 float y1 = nextChessItem.position.top;
-                float deltaY = y1 - y0 > 0 ? dp2px(getContext(), 20) : Math.abs((y1 - y0)) + dp2px(getContext(), 20);
+                float deltaY = y1 - y0 >= 0 ? dp2px(getContext(), 20) : Math.abs((y1 - y0)) + dp2px(getContext(), 20);
                 float y;
                 if (animatedValue < 0.5f) {
                     y = (float) (y0 - deltaY * Math.sin(Math.PI * animatedValue));
