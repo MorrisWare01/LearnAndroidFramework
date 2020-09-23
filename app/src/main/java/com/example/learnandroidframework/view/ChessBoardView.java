@@ -222,7 +222,7 @@ public class ChessBoardView extends View {
         go(player, items);
     }
 
-    private void go(final ChessPlayer player, List<ChessItem> items) {
+    private void go(final ChessPlayer player, final List<ChessItem> items) {
         if (player.isRunning) {
             return;
         }
