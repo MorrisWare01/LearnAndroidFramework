@@ -272,9 +272,9 @@ public class ChessBoardView extends View {
             }
         });
 
-        ObjectAnimator squash = ObjectAnimator.ofFloat(player, floatProperty, 0.6f).setDuration(100);
-        ObjectAnimator stretch = ObjectAnimator.ofFloat(player, floatProperty, 1.2f).setDuration(100);
-        ObjectAnimator scaleBack = ObjectAnimator.ofFloat(player, floatProperty, 1f).setDuration(100);
+        ObjectAnimator squash = ObjectAnimator.ofFloat(player, scaleYProperty, 0.6f).setDuration(100);
+        ObjectAnimator stretch = ObjectAnimator.ofFloat(player, scaleYProperty, 1.2f).setDuration(100);
+        ObjectAnimator scaleBack = ObjectAnimator.ofFloat(player, scaleYProperty, 1f).setDuration(100);
 
         AnimatorSet jumpUpSet = new AnimatorSet();
         jumpUpSet.playTogether(jumpUp, stretch);
@@ -314,7 +314,7 @@ public class ChessBoardView extends View {
         animatorSet.start();
     }
 
-    final Property<ChessPlayer, Float> floatProperty = new Property<ChessPlayer, Float>(Float.class, "scaleY") {
+    final Property<ChessPlayer, Float> scaleYProperty = new Property<ChessPlayer, Float>(Float.class, "scaleY") {
         @Override
         public Float get(ChessPlayer object) {
             return object.scaleY;
