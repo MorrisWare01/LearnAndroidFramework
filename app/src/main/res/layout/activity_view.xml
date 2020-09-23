@@ -1,6 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.learnandroidframework.view.MainView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</com.example.learnandroidframework.view.MainView>
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cv">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/j9"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.example.learnandroidframework.view.ChessBoardView
+                android:id="@+id/chess_board"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_go"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="30dp"
+        android:text="固定头"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
