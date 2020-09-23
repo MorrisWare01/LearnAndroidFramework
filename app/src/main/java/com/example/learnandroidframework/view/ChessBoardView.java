@@ -23,6 +23,7 @@ import com.example.learnandroidframework.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by mmw on 2020/9/22.
@@ -50,6 +51,7 @@ public class ChessBoardView extends View {
 
     private List<ChessItem> items = new ArrayList<>();
     private ChessPlayer player = new ChessPlayer();
+    private boolean isSceneLoading;
 
 
     public ChessBoardView(Context context) {
@@ -112,6 +114,8 @@ public class ChessBoardView extends View {
             items.add(new ChessItem(new Rect(x, y, x + mBoardRect.width(), y + mBoardRect.height())));
         }
         player.chessItem = items.get(0);
+
+        loadScene();
     }
 
     @Override
@@ -169,10 +173,18 @@ public class ChessBoardView extends View {
 
         // 绘制棋盘
         for (ChessItem item : items) {
+            canvas.save();
+            canvas.translate(0, item.translateY);
             canvas.drawBitmap(boardBitmap, mBoardRect, item.getPosition(), mPaint);
+            canvas.restore();
         }
 
         // 绘制玩家
+        if (isSceneLoading) {
+            canvas.restore();
+            return;
+        }
+
         Rect position = player.chessItem.getPosition();
         canvas.translate(player.translateX, player.translateY);
         canvas.translate(position.left + (position.width() - playerBitmap.getWidth()) / 2, position.top + (position.height() - playerBitmap.getHeight()) / 6);
@@ -219,6 +231,45 @@ public class ChessBoardView extends View {
 
     public void gameGo() {
         go(player, items);
+    }
+
+    public void loadScene() {
+        if (isSceneLoading) {
+            return;
+        }
+        isSceneLoading = true;
+        for (final ChessItem item : items) {
+            item.maxTranslateY = (float) (-dp2px(getContext(), 200) - Math.random() * dp2px(getContext(), 200));
+        }
+
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(1, 0f).setDuration(800);
+        valueAnimator.setInterpolator(new LinearInterpolator());
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float animatedValue = (float) animation.getAnimatedValue();
+                for (final ChessItem item : items) {
+                    item.translateY = item.maxTranslateY * animatedValue;
+                }
+                invalidate();
+            }
+        });
+        valueAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                isSceneLoading = false;
+                invalidate();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                super.onAnimationCancel(animation);
+                isSceneLoading = false;
+                invalidate();
+            }
+        });
+        valueAnimator.start();
     }
 
     private void go(final ChessPlayer player, final List<ChessItem> items) {

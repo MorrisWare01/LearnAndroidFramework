@@ -45,6 +45,9 @@ class ViewActivity : AppCompatActivity() {
         findViewById<View>(R.id.btn_start).setOnClickListener {
             chessBoardView.gameGo()
         }
+        findViewById<View>(R.id.btn_load_scene).setOnClickListener {
+            chessBoardView.loadScene()
+        }
     }
 
 }

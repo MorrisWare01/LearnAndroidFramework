@@ -29,6 +29,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_header" />
 
+            <Button
+                android:id="@+id/btn_load_scene"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="加载场景"
+                app:layout_constraintStart_toEndOf="@id/btn_start"
+                app:layout_constraintTop_toTopOf="@id/btn_start" />
+
             <com.example.learnandroidframework.view.ChessBoardView
                 android:id="@+id/chess_board"
                 android:layout_width="match_parent"

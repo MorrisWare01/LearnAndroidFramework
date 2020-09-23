@@ -9,6 +9,9 @@ public class ChessItem {
 
     public Rect position;
 
+    public float maxTranslateY = 0;
+    public float translateY = 0;
+
     public ChessItem(Rect position) {
         this.position = position;
     }
