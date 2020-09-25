@@ -65,6 +65,9 @@
             android:name=".activity.second.OtherSingleTaskActivity"
             android:launchMode="singleTask"
             android:taskAffinity=":other" />
+        <activity
+            android:name=".dice.DiceActivity"
+            android:screenOrientation="portrait" />
 
         <service android:name=".service.MainService" />
         <service android:name=".service.AidlService" />

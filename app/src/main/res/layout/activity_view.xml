@@ -7,7 +7,9 @@
     <ScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingTop="200dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -37,6 +39,14 @@
                 app:layout_constraintStart_toEndOf="@id/btn_start"
                 app:layout_constraintTop_toTopOf="@id/btn_start" />
 
+            <Button
+                android:id="@+id/btn_load_cube_scene"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="加载Cube场景"
+                app:layout_constraintStart_toEndOf="@id/btn_load_scene"
+                app:layout_constraintTop_toTopOf="@id/btn_load_scene" />
+
             <com.example.learnandroidframework.view.ChessBoardView
                 android:id="@+id/chess_board"
                 android:layout_width="match_parent"
@@ -51,6 +61,11 @@
                 android:text="跳跃"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
+
+            <com.example.learnandroidframework.view.MainView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -22,8 +23,8 @@ import androidx.annotation.Nullable;
 import com.example.learnandroidframework.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by mmw on 2020/9/22.
@@ -32,7 +33,6 @@ public class ChessBoardView extends View {
 
     private int chessBoardWidth;
     private int chessBoardHeight;
-    private float chessBoardRatio = 1.3f;
 
     private int boardMarginTop;
 
@@ -40,11 +40,22 @@ public class ChessBoardView extends View {
     private Bitmap boardBitmap;
     private Bitmap playerBitmap;
     private Bitmap testPlayerBitmap;
+    private Bitmap startBitmap;
+    private Bitmap trapBitmap;
+    private Bitmap fightBitmap;
+    private Bitmap reward1Bitmap;
+    private Bitmap reward2Bitmap;
+    private Bitmap reward3Bitmap;
+    private Bitmap reward4Bitmap;
+
+    private Bitmap cubeBitmap;
+    private Rect mCubeRect;
+    private List<ChessItem> cubeItems = new ArrayList<>();
+    private List<ChessItem> sortedCubeItems = new ArrayList<>();
+    private boolean isCubeSceneLoading;
 
     private Paint mPaint;
     private Rect mBoardRect;
-
-    private Rect tmpRect = new Rect();
 
     private List<ChessItem> testItems = new ArrayList<>();
     private ChessPlayer testPlayer = new ChessPlayer();
@@ -52,7 +63,6 @@ public class ChessBoardView extends View {
     private List<ChessItem> items = new ArrayList<>();
     private ChessPlayer player = new ChessPlayer();
     private boolean isSceneLoading;
-
 
     public ChessBoardView(Context context) {
         this(context, null);
@@ -73,6 +83,19 @@ public class ChessBoardView extends View {
         boardBitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.l0);
         playerBitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.player);
         testPlayerBitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.jr);
+        startBitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.start);
+        trapBitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.trap);
+        fightBitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.fight);
+        reward1Bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.reward_1);
+        reward2Bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.reward_2);
+        reward3Bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.reward_3);
+        reward4Bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.reward_4);
+
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.cube);
+        cubeBitmap = Bitmap.createScaledBitmap(bitmap, dp2px(getContext(), 80), dp2px(getContext(), 80), false);
+        bitmap.recycle();
+
+        mCubeRect = new Rect(0, 0, cubeBitmap.getWidth(), cubeBitmap.getHeight());
 
         mBoardRect = new Rect(0, 0, boardBitmap.getWidth(), boardBitmap.getHeight());
 
@@ -113,39 +136,71 @@ public class ChessBoardView extends View {
             y = y - mBoardRect.height();
             items.add(new ChessItem(new Rect(x, y, x + mBoardRect.width(), y + mBoardRect.height())));
         }
-        player.chessItem = items.get(0);
+
+        // cubeItems
+        x = 0;
+        y = 0;
+        int zIndex = 100;
+        cubeItems.clear();
+        for (int i = 0; i < 12; i++) {
+            int a = i / 3;
+            if (a == 0) {
+                x = x - mCubeRect.width() / 2;
+                y = y - mCubeRect.height() / 4;
+                zIndex--;
+            } else if (a == 1) {
+                x = x + mCubeRect.width() / 2;
+                y = y - mCubeRect.height() / 4;
+                zIndex--;
+            } else if (a == 2) {
+                x = x + mCubeRect.width() / 2;
+                y = y + mCubeRect.height() / 4;
+                zIndex++;
+            } else {
+                x = x - mCubeRect.width() / 2;
+                y = y + mCubeRect.height() / 4;
+                zIndex++;
+            }
+            ChessItem item = new ChessItem(new Rect(x, y, x + mCubeRect.width(), y + mCubeRect.height()));
+            item.zIndex = zIndex;
+
+            cubeItems.add(item);
+        }
+
+        sortedCubeItems.addAll(cubeItems);
+        Collections.sort(sortedCubeItems);
 
         loadScene();
+        loadCubeScene();
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//        int mode = View.MeasureSpec.getMode(widthMeasureSpec);
-//        int size = View.MeasureSpec.getSize(widthMeasureSpec);
-//        heightMeasureSpec = View.MeasureSpec.getMode(heightMeasureSpec);
-//        widthMeasureSpec = View.MeasureSpec.getSize(widthMeasureSpec);
-//        if (mode == MeasureSpec.AT_MOST && heightMeasureSpec == MeasureSpec.AT_MOST) {
-//            setMeasuredDimension(this.chessBoardWidth, this.chessBoardHeight);
-//            return;
-//        }
-//        if (mode == MeasureSpec.AT_MOST) {
-//            setMeasuredDimension(this.chessBoardWidth, widthMeasureSpec);
-//            return;
-//        }
-//        if (heightMeasureSpec == MeasureSpec.AT_MOST) {
-//            setMeasuredDimension(size, this.chessBoardHeight);
-//            return;
-//        }
-        setMeasuredDimension(chessBoardWidth, (chessBoardHeight));
+        setMeasuredDimension(chessBoardWidth, chessBoardHeight);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-//        drawBackground(canvas);
         drawGame(canvas);
         drawTest(canvas);
+        drawCube(canvas);
+    }
+
+    private void drawCube(Canvas canvas) {
+        canvas.save();
+        canvas.translate(getWidth() / 2 - mCubeRect.width() / 2, dp2px(getContext(), 600));
+
+//        int x = 0;
+//        int y = -firstCube.height / 2;
+        for (ChessItem item : sortedCubeItems) {
+            int alpha = mPaint.getAlpha();
+            mPaint.setAlpha((int) (item.alpha * 255));
+            canvas.drawBitmap(cubeBitmap, mCubeRect, item.getPosition(), mPaint);
+            mPaint.setAlpha(alpha);
+        }
+
+        canvas.restore();
     }
 
     @Override
@@ -153,18 +208,6 @@ public class ChessBoardView extends View {
         super.onSizeChanged(w, h, oldw, oldh);
         Log.d("TAG", "w:" + w + " h " + h);
 
-    }
-
-    private void drawBackground(Canvas canvas) {
-        canvas.save();
-        canvas.translate(0.0F, this.boardMarginTop);
-        Bitmap bitmap = this.chessBoardBitmap;
-        int i = bitmap.getWidth();
-        Rect rect = new Rect(0, 0, i, bitmap.getHeight());
-        Context context = getContext();
-        int left = -dp2px(context, 35);
-        canvas.drawBitmap(bitmap, rect, new Rect(left, 0, chessBoardWidth + dp2px(context, 35), this.chessBoardHeight), mPaint);
-        canvas.restore();
     }
 
     private void drawGame(Canvas canvas) {
@@ -175,16 +218,61 @@ public class ChessBoardView extends View {
         for (ChessItem item : items) {
             canvas.save();
             canvas.translate(0, item.translateY);
-            canvas.drawBitmap(boardBitmap, mBoardRect, item.getPosition(), mPaint);
+            // 绘制棋盘
+            switch (item.type) {
+                case 0:
+                    canvas.drawBitmap(startBitmap, mBoardRect, item.getPosition(), mPaint);
+                    break;
+                case 2:
+                    canvas.drawBitmap(fightBitmap, mBoardRect, item.getPosition(), mPaint);
+                    break;
+                case 3:
+                    canvas.drawBitmap(trapBitmap, mBoardRect, item.getPosition(), mPaint);
+                    break;
+                default:
+                    canvas.drawBitmap(boardBitmap, mBoardRect, item.getPosition(), mPaint);
+                    break;
+            }
             canvas.restore();
         }
 
-        // 绘制玩家
+        // 场景加载
         if (isSceneLoading) {
             canvas.restore();
             return;
         }
 
+        // 绘制道具
+        for (ChessItem item : items) {
+            switch (item.type) {
+                case 1:
+                    canvas.save();
+                    canvas.translate((mBoardRect.width() - reward1Bitmap.getWidth()) / 2, -(reward1Bitmap.getHeight()) / 2.5f);
+                    canvas.drawBitmap(reward1Bitmap, item.getPosition().left, item.position.top, mPaint);
+                    canvas.restore();
+                    break;
+                case 2:
+                    canvas.save();
+                    canvas.translate((mBoardRect.width() - reward2Bitmap.getWidth()) / 2, -(reward2Bitmap.getHeight()) / 2.5f);
+                    canvas.drawBitmap(reward2Bitmap, item.getPosition().left, item.position.top, mPaint);
+                    canvas.restore();
+                    break;
+                case 3:
+                    canvas.save();
+                    canvas.translate((mBoardRect.width() - reward3Bitmap.getWidth()) / 2, -(reward3Bitmap.getHeight()) / 2f);
+                    canvas.drawBitmap(reward3Bitmap, item.getPosition().left, item.position.top, mPaint);
+                    canvas.restore();
+                    break;
+                case 4:
+                    canvas.save();
+                    canvas.translate((mBoardRect.width() - reward4Bitmap.getWidth()) / 2, -(reward4Bitmap.getHeight()) / 2.5f);
+                    canvas.drawBitmap(reward4Bitmap, item.getPosition().left, item.position.top, mPaint);
+                    canvas.restore();
+                    break;
+            }
+        }
+
+        // 绘制玩家
         Rect position = player.chessItem.getPosition();
         canvas.translate(player.translateX, player.translateY);
         canvas.translate(position.left + (position.width() - playerBitmap.getWidth()) / 2, position.top + (position.height() - playerBitmap.getHeight()) / 6);
@@ -238,9 +326,19 @@ public class ChessBoardView extends View {
             return;
         }
         isSceneLoading = true;
+        // 模拟位置
         for (final ChessItem item : items) {
             item.maxTranslateY = (float) (-dp2px(getContext(), 200) - Math.random() * dp2px(getContext(), 200));
         }
+
+        // 模拟类型
+        for (ChessItem item : items) {
+            item.type = (int) (Math.random() * 10) + 1;
+        }
+        items.get(0).type = 0;
+
+        // 重置玩家位置
+        player.chessItem = items.get(0);
 
         ValueAnimator valueAnimator = ValueAnimator.ofFloat(1, 0f).setDuration(800);
         valueAnimator.setInterpolator(new LinearInterpolator());
@@ -345,6 +443,7 @@ public class ChessBoardView extends View {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
+                // 切换到下一位
                 player.chessItem = nextChessItem;
                 player.translateX = 0;
                 player.translateY = 0;
@@ -353,11 +452,37 @@ public class ChessBoardView extends View {
                 invalidate();
 
                 player.isRunning = false;
+
+                // 触发事件
+                switch (nextChessItem.type) {
+                    case 1:
+                        Log.d("TAG", "触发钻石事件");
+                        break;
+                    case 2:
+                        Log.d("TAG", "触发PK事件");
+                        break;
+                    case 3:
+                        Log.d("TAG", "触发陷阱事件，回到起点");
+                        player.chessItem = items.get(0);
+                        Path path = new Path();
+
+                        break;
+                    case 4:
+                        Log.d("TAG", "触发碎片事件");
+                        break;
+                }
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
                 super.onAnimationCancel(animation);
+                // 恢复原位
+                player.translateX = 0;
+                player.translateY = 0;
+                player.scaleX = 1;
+                player.scaleY = 1;
+                invalidate();
+
                 player.isRunning = false;
             }
         });
@@ -377,4 +502,39 @@ public class ChessBoardView extends View {
             invalidate();
         }
     };
+
+    public void loadCubeScene() {
+        if (isCubeSceneLoading) {
+            return;
+        }
+        isCubeSceneLoading = true;
+
+        for (ChessItem chessItem : cubeItems) {
+            chessItem.alpha = 0;
+        }
+        fadeIn(cubeItems, 0);
+    }
+
+    private void fadeIn(final List<ChessItem> items, final int position) {
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 1).setDuration(300);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                items.get(position).alpha = (float) animation.getAnimatedValue();
+                invalidate();
+            }
+        });
+        valueAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                if (position + 1 >= items.size()) {
+                    isCubeSceneLoading = false;
+                    return;
+                }
+                fadeIn(items, position + 1);
+            }
+        });
+        valueAnimator.start();
+    }
 }

@@ -1,10 +1,7 @@
 package com.example.learnandroidframework.view
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Matrix
-import android.graphics.Paint
+import android.graphics.*
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
@@ -24,6 +21,13 @@ class MainView @JvmOverloads constructor(
     }
 
     private val mMatrix = Matrix()
+    private val mPath = Path()
+    private val mPaint = Paint().apply {
+//        style = Paint.Style.STROKE
+        color = Color.RED
+    }
+
+    private val maxHeight: Int = (context.resources.displayMetrics.density * 200).toInt()
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
 
@@ -35,52 +39,56 @@ class MainView @JvmOverloads constructor(
 
         Log.d(
             "TAG",
-            "onMeasure: ${MeasureSpec.toString(widthMeasureSpec)} | ${MeasureSpec.toString(
-                heightMeasureSpec
-            )}"
+            "onMeasure: ${MeasureSpec.toString(widthMeasureSpec)} | ${
+                MeasureSpec.toString(
+                    heightMeasureSpec
+                )
+            }"
         )
-        setMeasuredDimension(wSize, hSize)
+        setMeasuredDimension(wSize, maxHeight.coerceAtMost(hSize))
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         Log.d("TAG", "onDraw")
-        canvas.drawColor(Color.parseColor("#f2f2f2"))
-
-//        paint.color = Color.BLACK
-//        canvas.save()
-//        canvas.translate(10f, 10f)
-//        canvas.scale(0.5f, 0.5f);
-//        canvas.drawRect(0f, 0f, 100f, 100f, paint)
-//        canvas.restore()
-//
-//        paint.color = Color.BLACK
-//        canvas.save()
-//        canvas.translate(10f, 10f)
-//        canvas.scale(0.5f, 0.5f, 50f, 50f);
-//        canvas.drawRect(0f, 0f, 100f, 100f, paint)
-//        canvas.restore()
-
-        paint.color = Color.BLACK
-        mMatrix.reset()
-        mMatrix.preTranslate(10f, 10f)
-//        mMatrix.preScale(2f, 2f)
-        mMatrix.preRotate(30f)
-        canvas.save()
-        canvas.setMatrix(mMatrix)
-        canvas.drawRect(0f, 0f, 100f, 100f, paint)
+        canvas.saveLayer(0f, 0f, width.toFloat(), 300f, mPaint)
+        canvas.translate(50f, 50f)
+        mPath.reset()
+        mPath.fillType = Path.FillType.INVERSE_WINDING
+        mPath.addOval(0f, 0f, 50f, 100f, Path.Direction.CW)
+        mPath.addRect(150f, 150f, 200f, 200f, Path.Direction.CW)
+        // simple type
+        mPath.addRoundRect(
+            300f, 100f, 400f, 200f, floatArrayOf(
+                20f, 20f, 20f, 20f, 20f, 20f, 20f, 20f
+            ), Path.Direction.CW
+        )
+        // rect
+        mPath.addRoundRect(
+            500f, 100f, 600f, 200f, floatArrayOf(
+                20f, 0f, 20f, 0f, 0f, 20f, 0f, 20f
+            ), Path.Direction.CW
+        )
+        // ninePatch
+        mPath.addRoundRect(
+            700f, 100f, 800f, 200f, floatArrayOf(
+                10f, 20f, 30f, 40f, 30f, 40f, 10f, 20f
+            ), Path.Direction.CW
+        )
+        // complex
+        mPath.addRoundRect(
+            900f, 100f, 1000f, 200f, floatArrayOf(
+                10f, 20f, 30f, 40f, 50f, 60f, 70f, 80f
+            ), Path.Direction.CW
+        )
+        // oval
+        mPath.addRoundRect(
+            1100f, 100f, 1200f, 200f, floatArrayOf(
+                50f, 50f, 50f, 50f, 50f, 50f, 50f, 50f
+            ), Path.Direction.CW
+        )
+        canvas.drawPath(mPath, mPaint)
         canvas.restore()
-
-        paint.color = Color.RED
-        mMatrix.reset()
-        mMatrix.postTranslate(10f, 10f)
-//        mMatrix.postScale(2f, 2f)
-        mMatrix.postRotate(30f)
-        canvas.save()
-        canvas.setMatrix(mMatrix)
-        canvas.drawRect(0f, 0f, 100f, 100f, paint)
-        canvas.restore()
-
     }
 
 }

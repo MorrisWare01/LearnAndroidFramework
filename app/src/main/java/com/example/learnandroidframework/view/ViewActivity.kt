@@ -48,6 +48,9 @@ class ViewActivity : AppCompatActivity() {
         findViewById<View>(R.id.btn_load_scene).setOnClickListener {
             chessBoardView.loadScene()
         }
+        findViewById<View>(R.id.btn_load_cube_scene).setOnClickListener {
+            chessBoardView.loadCubeScene()
+        }
     }
 
 }

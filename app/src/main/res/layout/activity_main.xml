@@ -45,6 +45,12 @@
             android:text="view test" />
 
         <Button
+            android:id="@+id/startDiceActivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="dice test" />
+
+        <Button
             android:id="@+id/binderTest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

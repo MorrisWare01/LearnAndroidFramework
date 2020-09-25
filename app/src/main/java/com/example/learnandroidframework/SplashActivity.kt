@@ -14,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.learnandroidframework.activity.ActivityTestActivity
+import com.example.learnandroidframework.dice.DiceActivity
 import com.example.learnandroidframework.fragment.FragmentTestActivity
 import com.example.learnandroidframework.fragment.NavigationTestActivity
 import com.example.learnandroidframework.provider.ProviderTestActivity
@@ -48,6 +49,9 @@ class SplashActivity : AppCompatActivity() {
         }
         startViewActivity.setOnClickListener {
             startActivity(Intent(this, ViewActivity::class.java))
+        }
+        startDiceActivity.setOnClickListener {
+            startActivity(Intent(this, DiceActivity::class.java))
         }
         binderTest.setOnClickListener {
             try {
