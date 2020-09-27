@@ -1,259 +1,368 @@
-package com.example.learnandroidframework.dice;
+package com.example.learnandroidframework.dice
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.util.AttributeSet;
-import android.util.Property;
-import android.view.View;
-import android.view.animation.LinearInterpolator;
-
-import androidx.annotation.Nullable;
-
-import com.example.learnandroidframework.R;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.animation.*
+import android.content.Context
+import android.graphics.*
+import android.graphics.drawable.ShapeDrawable
+import android.graphics.drawable.shapes.OvalShape
+import android.text.TextPaint
+import android.util.AttributeSet
+import android.util.Property
+import android.view.View
+import android.view.animation.LinearInterpolator
+import com.example.learnandroidframework.R
+import java.util.*
 
 /**
  * Created by mmw on 2020/9/25.
  */
-public class DiceView extends View {
-
+class DiceView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : View(context, attrs, defStyleAttr) {
     // 建筑物
-    private Bitmap mBuildingBitmap;
-    private Rect mBuildingRect;
+    private val mBuildingBitmap: Bitmap
+    private val mBuildingRect: Rect
+
     // 玩家
-    private Bitmap mPlayerBitmap;
+    private val mPlayerBitmap: Bitmap
+    private val mPlayerAvatarBitmap: Bitmap
+
     // 棋盘
-    private Bitmap mBoardBitmap;
-    private Rect mBoardRect;
+    private val mBoardBitmap: Bitmap
+    private val mBoardCheckBitmap: Bitmap
+    private val mBoardRect: Rect
+    private val mBoardRatio: Float = 82.0f / (82 + 95)
 
-    private Paint mPaint = new Paint();
+    // 道具
+    private val mRedBagBitmap: Bitmap =
+        BitmapFactory.decodeResource(resources, R.mipmap.dice_red_bag)
+    private val mCoinBitmap: Bitmap = BitmapFactory.decodeResource(resources, R.mipmap.dice_coin)
+    private val mTrapBitmap: Bitmap = BitmapFactory.decodeResource(resources, R.mipmap.dice_trap)
+    private val mEventBitmap: Bitmap = BitmapFactory.decodeResource(resources, R.mipmap.dice_event)
 
-    private List<DiceBuilding> diceBuildingList = new ArrayList<>();
-    private List<DiceChess> diceChessList = new ArrayList<>();
-    private DicePlayer dicePlayer = new DicePlayer();
-
-    public DiceView(Context context) {
-        this(context, null);
+    //
+    private val mPaint = Paint()
+    private val mTextPaint = TextPaint().apply {
+        textSize = sp2px(context, 16).toFloat()
+        color = Color.WHITE
     }
 
-    public DiceView(Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, 0);
+    private val diceBuildingList: MutableList<DiceBuilding> = ArrayList()
+    private val diceChessList: MutableList<DiceChess> = ArrayList()
+    private val dicePlayer = DicePlayer()
+
+    init {
+        val widthPixels = context.resources.displayMetrics.widthPixels
+        val tmp = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(tmp)
+        canvas.drawColor(Color.parseColor("#b38d74"))
+        mBuildingBitmap =
+            Bitmap.createScaledBitmap(tmp, dp2px(context, 156), dp2px(context, 200), false)
+        mBuildingRect = Rect(0, 0, mBuildingBitmap.width, mBuildingBitmap.height)
+        tmp.recycle()
+
+        mBoardBitmap = BitmapFactory.decodeResource(resources, R.mipmap.dice_board)
+        mBoardCheckBitmap = BitmapFactory.decodeResource(resources, R.mipmap.dice_board_checked)
+        mBoardRect = Rect(0, 0, mBoardBitmap.width, mBoardBitmap.height)
+
+        mPlayerBitmap = BitmapFactory.decodeResource(resources, R.mipmap.dice_player)
+
+        val avatar =
+            Bitmap.createBitmap(dp2px(context, 30), dp2px(context, 30), Bitmap.Config.ARGB_8888)
+        Canvas(avatar).drawOval(
+            RectF(0f, 0f, dp2px(context, 30).toFloat(), dp2px(context, 30).toFloat()),
+            mPaint
+        )
+        mPlayerAvatarBitmap = avatar
     }
 
-    public DiceView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        int widthPixels = context.getResources().getDisplayMetrics().widthPixels;
-
-        Bitmap tmp = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(tmp);
-        canvas.drawColor(Color.parseColor("#b38d74"));
-
-        mBuildingBitmap = Bitmap.createScaledBitmap(tmp, widthPixels / 3, (int) (widthPixels / 3 * 1.5f), false);
-        mBuildingRect = new Rect(0, 0, mBuildingBitmap.getWidth(), mBuildingBitmap.getHeight());
-
-        mPlayerBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.player);
-
-        canvas.drawColor(Color.parseColor("#ff0000"));
-
-        mBoardBitmap = Bitmap.createScaledBitmap(tmp, dp2px(getContext(), 30), dp2px(getContext(), 30), false);
-        mBoardRect = new Rect(0, 0, mBoardBitmap.getWidth(), mBoardBitmap.getHeight());
+    private fun dp2px(context: Context, dp: Int): Int {
+        return (context.resources.displayMetrics.density * dp + 0.5f).toInt()
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int widthPixels = getContext().getResources().getDisplayMetrics().widthPixels;
-        int heightPixels = getContext().getResources().getDisplayMetrics().heightPixels;
-
-        setMeasuredDimension(widthPixels, (int) (heightPixels * 2f));
-        onSizeChanged(getMeasuredWidth(), getMeasuredHeight(), 0, 0);
+    private fun sp2px(context: Context, sp: Int): Int {
+        return (context.resources.displayMetrics.scaledDensity * sp + 0.5f).toInt()
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val widthPixels = context.resources.displayMetrics.widthPixels
+        val heightPixels = context.resources.displayMetrics.heightPixels
+        setMeasuredDimension(widthPixels, (heightPixels * 2f).toInt())
+        onSizeChanged(measuredWidth, measuredHeight, 0, 0)
+    }
 
-        int x = 0;
-        int y = 0;
-        int magrin = dp2px(getContext(), 20);
-        int leftBottom = dp2px(getContext(), 100);
-        diceBuildingList.clear();
-        for (int i = 0; i < 5; i++) {
-            x = w - mBuildingBitmap.getWidth();
-            y = h - (i + 1) * mBuildingBitmap.getHeight() - i * magrin;
-            diceBuildingList.add(new DiceBuilding(new Rect(x, y, x + mBuildingBitmap.getWidth(), y + mBuildingBitmap.getHeight())));
-
-            diceBuildingList.add(new DiceBuilding(new Rect(0, y - leftBottom, mBuildingBitmap.getWidth(), y - leftBottom + mBuildingBitmap.getHeight())));
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        var x = 0
+        var y = 0
+        val magrin = mBoardBitmap.height
+        val leftBottom = mBuildingBitmap.height / 2 + mBoardBitmap.height / 2
+        diceBuildingList.clear()
+        for (i in 0..4) {
+            x = w - mBuildingBitmap.width
+            y = h - (i + 1) * mBuildingBitmap.height - i * magrin
+            diceBuildingList.add(
+                DiceBuilding(
+                    Rect(
+                        x,
+                        y,
+                        x + mBuildingBitmap.width,
+                        y + mBuildingBitmap.height
+                    )
+                )
+            )
+            diceBuildingList.add(
+                DiceBuilding(
+                    Rect(
+                        0,
+                        y - leftBottom,
+                        mBuildingBitmap.width,
+                        y - leftBottom + mBuildingBitmap.height
+                    )
+                )
+            )
         }
-
-        int i = 0;
-        while (i < diceBuildingList.size() - 1) {
+        var i = 0
+        diceChessList.clear()
+        while (i < diceBuildingList.size - 1) {
             // cur
-            DiceBuilding cur = diceBuildingList.get(i);
-            x = (w - cur.getRect().width() - mBoardBitmap.getWidth()) / 2;
-            y = cur.getRect().top + (cur.getRect().height() - mBoardBitmap.getHeight()) / 2;
-            if (cur.getRect().left == 0) {
-                x += cur.getRect().width();
+            val buildingRect = diceBuildingList[i].rect
+            val freeSpace = w - buildingRect.width() - mBoardBitmap.width
+            x = if (buildingRect.left == 0) {
+                (buildingRect.width() + freeSpace * (1 - mBoardRatio)).toInt()
+            } else {
+                (freeSpace * mBoardRatio).toInt();
             }
-            DiceChess curChess = new DiceChess(new Rect(x, y, x + mBoardBitmap.getWidth(), y + mBoardBitmap.getHeight()));
-            diceChessList.add(curChess);
+            y = buildingRect.top + buildingRect.height() / 2 - mBoardBitmap.height / 2
+            val curChess = DiceChess(Rect(x, y, x + mBoardBitmap.width, y + mBoardBitmap.height))
+            diceChessList.add(curChess)
 
             //next
-            DiceBuilding next = diceBuildingList.get(i + 1);
-            x = (w - next.getRect().width() - mBoardBitmap.getWidth()) / 2;
-            y = next.getRect().top + (next.getRect().height() - mBoardBitmap.getHeight()) / 2;
-            if (next.getRect().left == 0) {
-                x += next.getRect().width();
+            val nextBuildingRect = diceBuildingList[i + 1].rect
+            x = if (nextBuildingRect.left == 0) {
+                (nextBuildingRect.width() + freeSpace * (1 - mBoardRatio)).toInt()
+            } else {
+                (freeSpace * mBoardRatio).toInt();
             }
-            DiceChess nextChess = new DiceChess(new Rect(x, y, x + mBoardBitmap.getWidth(), y + mBoardBitmap.getHeight()));
+            y = nextBuildingRect.top + nextBuildingRect.height() / 2 - mBoardBitmap.height / 2
+            val nextChess = DiceChess(Rect(x, y, x + mBoardBitmap.width, y + mBoardBitmap.height))
 
             // 中间
-            int count = 2;
-            int spaceW = (nextChess.getRect().left - curChess.getRect().left) / (count + 1);
-            int spaceH = (nextChess.getRect().top - curChess.getRect().top) / (count + 1);
-            for (int j = 0; j < count; j++) {
-                x = curChess.getRect().left + (j + 1) * spaceW;
-                y = curChess.getRect().top + (j + 1) * spaceH;
-                diceChessList.add(new DiceChess(new Rect(x, y, x + mBoardBitmap.getWidth(), y + mBoardBitmap.getHeight())));
+            val count = 2
+            val spaceW = (nextChess.rect.left - curChess.rect.left) / (count + 1)
+            val spaceH = (nextChess.rect.top - curChess.rect.top) / (count + 1)
+            for (j in 0 until count) {
+                x = curChess.rect.left + (j + 1) * spaceW
+                y = curChess.rect.top + (j + 1) * spaceH
+                diceChessList.add(
+                    DiceChess(
+                        Rect(
+                            x,
+                            y,
+                            x + mBoardBitmap.width,
+                            y + mBoardBitmap.height
+                        )
+                    )
+                )
             }
-
-            i++;
-            if (i == diceBuildingList.size() - 1) {
-                diceChessList.add(nextChess);
+            i++
+            if (i == diceBuildingList.size - 1) {
+                diceChessList.add(nextChess)
             }
         }
 
-        dicePlayer.setChess(diceChessList.get(0));
+        for ((index, item) in diceChessList.withIndex()) {
+            // 模拟类型
+            item.type = when ((Math.random() * 10).toInt() + 1) {
+                1 -> DiceChess.TYPE_RED_BAG
+                2 -> DiceChess.TYPE_COIN
+                3 -> DiceChess.TYPE_TRAP
+                4 -> DiceChess.TYPE_EVENT
+                else -> null
+            }
+        }
+
+        dicePlayer.chess = diceChessList[0]
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        canvas.drawColor(Color.parseColor("#c2bace"));
+    override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
 
-        int saveCount = canvas.save();
+        // 绘制背景
+        canvas.drawColor(Color.parseColor("#c2bace"))
 
-        for (DiceBuilding item : diceBuildingList) {
-            canvas.drawBitmap(mBuildingBitmap, mBuildingRect, item.getRect(), mPaint);
+        // 绘制建筑
+        for ((rect) in diceBuildingList) {
+            canvas.drawBitmap(mBuildingBitmap, mBuildingRect, rect, mPaint)
         }
 
-        for (DiceChess item : diceChessList) {
-            canvas.drawBitmap(mBoardBitmap, mBoardRect, item.getRect(), mPaint);
+        for ((index, item) in diceChessList.withIndex()) {
+            // 绘制棋盘
+            val chess = dicePlayer.chess
+            if (chess != null && index <= diceChessList.indexOf(chess)) {
+                canvas.drawBitmap(mBoardCheckBitmap, mBoardRect, item.rect, mPaint)
+            } else {
+                canvas.drawBitmap(mBoardBitmap, mBoardRect, item.rect, mPaint)
+            }
+
+            // 绘制序号
+            val number = (index + 1).toString()
+            val numberWidth = mTextPaint.measureText(number)
+            canvas.save()
+            canvas.translate(
+                item.rect.left.toFloat() + (item.rect.width() - numberWidth) / 2.toFloat(),
+                item.rect.top.toFloat() + (mBoardBitmap.height / 2).toFloat()
+            )
+            canvas.drawText(number, 0f, 0f, mTextPaint)
+            canvas.restore()
+
+            // 绘制道具
+            when (item.type) {
+                DiceChess.TYPE_RED_BAG -> {
+                    canvas.save()
+                    canvas.translate(
+                        item.rect.left.toFloat() + (mBoardRect.width() - mRedBagBitmap.width) / 2.toFloat(),
+                        item.rect.top.toFloat() - mPlayerBitmap.height * 0.65f
+                    )
+                    canvas.drawBitmap(mRedBagBitmap, 0f, 0f, mPaint)
+                    canvas.restore()
+                }
+                DiceChess.TYPE_COIN -> {
+                    canvas.save()
+                    canvas.translate(
+                        item.rect.left.toFloat() + (mBoardRect.width() - mCoinBitmap.width) / 2.toFloat(),
+                        item.rect.top.toFloat() - mPlayerBitmap.height * 0.68f
+                    )
+                    canvas.drawBitmap(mCoinBitmap, 0f, 0f, mPaint)
+                    canvas.restore()
+                }
+                DiceChess.TYPE_TRAP -> {
+                    canvas.save()
+                    canvas.translate(
+                        item.rect.left.toFloat() + (mBoardRect.width() - mTrapBitmap.width) / 2.toFloat(),
+                        item.rect.top.toFloat() - mPlayerBitmap.height * 0.58f
+                    )
+                    canvas.drawBitmap(mTrapBitmap, 0f, 0f, mPaint)
+                    canvas.restore()
+                }
+                DiceChess.TYPE_EVENT -> {
+                    canvas.save()
+                    canvas.translate(
+                        item.rect.left.toFloat() + (mBoardRect.width() - mEventBitmap.width) / 2.toFloat(),
+                        item.rect.top.toFloat() - mPlayerBitmap.height * 0.65f
+                    )
+                    canvas.drawBitmap(mEventBitmap, 0f, 0f, mPaint)
+                    canvas.restore()
+                }
+            }
         }
 
-        DiceChess chess = dicePlayer.getChess();
+        // 绘制角色
+        val chess = dicePlayer.chess
         if (chess != null) {
-            canvas.translate(dicePlayer.getTranslateX(), dicePlayer.getTranslateY());
-            canvas.translate(chess.getRect().left + (chess.getRect().width() - mPlayerBitmap.getWidth()) / 2,
-                    chess.getRect().top + (chess.getRect().height() - mPlayerBitmap.getHeight()) / 6);
-            canvas.scale(dicePlayer.getScaleX(), dicePlayer.getScaleY(), mPlayerBitmap.getWidth() / 2, mPlayerBitmap.getHeight());
-            canvas.drawBitmap(mPlayerBitmap, 0, 0, mPaint);
-        }
+            canvas.save()
+            canvas.translate(
+                chess.rect.left.toFloat() + (chess.rect.width() - mPlayerBitmap.width) / 2.toFloat(),
+                chess.rect.top.toFloat() - mPlayerBitmap.height * 0.8f
+            )
+            canvas.translate(dicePlayer.translateX, dicePlayer.translateY)
+            canvas.scale(
+                dicePlayer.scaleX,
+                dicePlayer.scaleY,
+                mPlayerBitmap.width / 2.toFloat(),
+                mPlayerBitmap.height.toFloat()
+            )
 
-        canvas.restoreToCount(saveCount);
+            // 绘制角色背景
+            canvas.drawBitmap(mPlayerBitmap, 0f, 0f, mPaint)
+            // 绘制角色头像
+            canvas.drawBitmap(
+                mPlayerAvatarBitmap,
+                (mPlayerBitmap.width - mPlayerAvatarBitmap.width) / 2.toFloat(),
+                dp2px(context, 8).toFloat(),
+                mPaint
+            )
+
+            canvas.restore()
+        }
     }
 
-
-    private int dp2px(Context context, int dp) {
-        return (int) (context.getResources().getDisplayMetrics().density * dp + 0.5f);
-    }
-
-    private void go(final DicePlayer player, final List<DiceChess> items) {
-        if (player.isRunning()) {
-            return;
+    private fun go(player: DicePlayer, items: List<DiceChess>) {
+        if (player.isRunning) {
+            return
         }
-        final DiceChess chessItem = player.getChess();
-        final DiceChess nextChessItem = items.get((items.indexOf(chessItem) + 1) % items.size());
-        if (chessItem == null || nextChessItem == null) {
-            return;
+        val chessItem = player.chess
+        if (chessItem == null) {
+            return
         }
-
-        ValueAnimator jumpUp = ValueAnimator.ofFloat(0, 0.5f);
-        jumpUp.setDuration(250);
-        jumpUp.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float animatedValue = (float) animation.getAnimatedValue();
-
-                float y0 = chessItem.getRect().top;
-                float y1 = nextChessItem.getRect().top;
-                float deltaY = y1 - y0 >= 0 ? dp2px(getContext(), 20) : Math.abs((y1 - y0)) + dp2px(getContext(), 20);
-                float y;
-                if (animatedValue < 0.5f) {
-                    y = (float) (y0 - deltaY * Math.sin(Math.PI * animatedValue));
-                } else {
-                    y = (float) (y1 - (y1 + deltaY - y0) * Math.sin(Math.PI * animatedValue));
-                }
-                player.setTranslateX((nextChessItem.getRect().left - chessItem.getRect().left) * animatedValue);
-                player.setTranslateY(y - y0);
-                invalidate();
+        val nextChessItem = items[(items.indexOf(chessItem) + 1) % items.size]
+        val jumpUp = ValueAnimator.ofFloat(0f, 0.5f)
+        jumpUp.duration = 250
+        jumpUp.addUpdateListener { animation ->
+            val animatedValue = animation.animatedValue as Float
+            val y0 = chessItem.rect.top.toFloat()
+            val y1 = nextChessItem.rect.top.toFloat()
+            val deltaY =
+                if (y1 - y0 >= 0) dp2px(context, 20).toFloat() else Math.abs(y1 - y0) + dp2px(
+                    context, 20
+                )
+            val y: Float
+            y = if (animatedValue < 0.5f) {
+                (y0 - deltaY * Math.sin(Math.PI * animatedValue)).toFloat()
+            } else {
+                (y1 - (y1 + deltaY - y0) * Math.sin(Math.PI * animatedValue)).toFloat()
             }
-        });
-
-        ValueAnimator jumpDown = ValueAnimator.ofFloat(0.5f, 1f);
-        jumpDown.setDuration(250);
-        jumpDown.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float animatedValue = (float) animation.getAnimatedValue();
-
-                float y0 = chessItem.getRect().top;
-                float y1 = nextChessItem.getRect().top;
-                float deltaY = y1 - y0 >= 0 ? dp2px(getContext(), 20) : Math.abs((y1 - y0)) + dp2px(getContext(), 20);
-                float y;
-                if (animatedValue < 0.5f) {
-                    y = (float) (y0 - deltaY * Math.sin(Math.PI * animatedValue));
-                } else {
-                    y = (float) (y1 - (y1 + deltaY - y0) * Math.sin(Math.PI * animatedValue));
-                }
-                player.setTranslateX((nextChessItem.getRect().left - chessItem.getRect().left) * animatedValue);
-                player.setTranslateY(y - y0);
-                invalidate();
+            player.translateX = (nextChessItem.rect.left - chessItem.rect.left) * animatedValue
+            player.translateY = y - y0
+            invalidate()
+        }
+        val jumpDown = ValueAnimator.ofFloat(0.5f, 1f)
+        jumpDown.duration = 250
+        jumpDown.addUpdateListener { animation ->
+            val animatedValue = animation.animatedValue as Float
+            val y0 = chessItem.rect.top.toFloat()
+            val y1 = nextChessItem.rect.top.toFloat()
+            val deltaY =
+                if (y1 - y0 >= 0) dp2px(context, 20).toFloat() else Math.abs(y1 - y0) + dp2px(
+                    context, 20
+                )
+            val y: Float
+            y = if (animatedValue < 0.5f) {
+                (y0 - deltaY * Math.sin(Math.PI * animatedValue)).toFloat()
+            } else {
+                (y1 - (y1 + deltaY - y0) * Math.sin(Math.PI * animatedValue)).toFloat()
             }
-        });
-
-        ObjectAnimator squash = ObjectAnimator.ofFloat(player, scaleYProperty, 0.6f).setDuration(100);
-        ObjectAnimator stretch = ObjectAnimator.ofFloat(player, scaleYProperty, 1.2f).setDuration(100);
-        ObjectAnimator scaleBack = ObjectAnimator.ofFloat(player, scaleYProperty, 1f).setDuration(100);
-
-        AnimatorSet jumpUpSet = new AnimatorSet();
-        jumpUpSet.playTogether(jumpUp, stretch);
-
-        AnimatorSet jumpDownSet = new AnimatorSet();
-        jumpDownSet.playTogether(jumpDown, scaleBack);
-
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.setInterpolator(new LinearInterpolator());
-        animatorSet.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                player.setRunning(true);
+            player.translateX = (nextChessItem.rect.left - chessItem.rect.left) * animatedValue
+            player.translateY = y - y0
+            invalidate()
+        }
+        val squash = ObjectAnimator.ofFloat(player, scaleYProperty, 0.6f).setDuration(100)
+        val stretch = ObjectAnimator.ofFloat(player, scaleYProperty, 1.2f).setDuration(100)
+        val scaleBack = ObjectAnimator.ofFloat(player, scaleYProperty, 1f).setDuration(100)
+        val jumpUpSet = AnimatorSet()
+        jumpUpSet.playTogether(jumpUp, stretch)
+        val jumpDownSet = AnimatorSet()
+        jumpDownSet.playTogether(jumpDown, scaleBack)
+        val animatorSet = AnimatorSet()
+        animatorSet.interpolator = LinearInterpolator()
+        animatorSet.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationStart(animation: Animator) {
+                super.onAnimationStart(animation)
+                player.isRunning = true
             }
 
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
+            override fun onAnimationEnd(animation: Animator) {
+                super.onAnimationEnd(animation)
                 // 切换到下一位
-                player.setChess(nextChessItem);
-                player.setTranslateX(0);
-                player.setTranslateY(0);
-                player.setScaleX(1);
-                player.setScaleY(1);
-                invalidate();
-
-                player.setRunning(false);
+                player.chess = nextChessItem
+                player.translateX = 0f
+                player.translateY = 0f
+                player.scaleX = 1f
+                player.scaleY = 1f
+                invalidate()
+                player.isRunning = false
 
                 // 触发事件
 //                switch (nextChessItem.get) {
@@ -275,38 +384,36 @@ public class DiceView extends View {
 //                }
             }
 
-            @Override
-            public void onAnimationCancel(Animator animation) {
-                super.onAnimationCancel(animation);
+            override fun onAnimationCancel(animation: Animator) {
+                super.onAnimationCancel(animation)
                 // 恢复原位
-                player.setTranslateX(0);
-                player.setTranslateY(0);
-                player.setScaleX(1);
-                player.setScaleY(1);
-                invalidate();
-
-                player.setRunning(false);
+                player.translateX = 0f
+                player.translateY = 0f
+                player.scaleX = 1f
+                player.scaleY = 1f
+                invalidate()
+                player.isRunning = false
             }
-        });
-        animatorSet.playSequentially(squash, jumpUpSet, jumpDownSet);
-        animatorSet.start();
+        })
+        animatorSet.playSequentially(squash, jumpUpSet, jumpDownSet)
+        animatorSet.start()
     }
 
-    final Property<DicePlayer, Float> scaleYProperty = new Property<DicePlayer, Float>(Float.class, "scaleY") {
-        @Override
-        public Float get(DicePlayer object) {
-            return object.getScaleY();
+    val scaleYProperty: Property<DicePlayer, Float> = object : Property<DicePlayer, Float>(
+        Float::class.java, "scaleY"
+    ) {
+        override fun get(`object`: DicePlayer): Float {
+            return `object`.scaleY
         }
 
-        @Override
-        public void set(DicePlayer object, Float value) {
-            object.setScaleY(value);
-            invalidate();
+        override fun set(`object`: DicePlayer, value: Float) {
+            `object`.scaleY = value
+            invalidate()
         }
-    };
+    }
 
-    public void go() {
-        go(dicePlayer, diceChessList);
+    fun go() {
+        go(dicePlayer, diceChessList)
     }
 
 }
