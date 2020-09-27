@@ -56,8 +56,8 @@ class DiceView @JvmOverloads constructor(
     private val mEventBitmap: Bitmap = BitmapFactory.decodeResource(resources, R.mipmap.dice_event)
 
     //
-    private val mPaint = Paint()
-    private val mTextPaint = TextPaint().apply {
+    private val mPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val mTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
         textSize = sp2px(context, 16).toFloat()
         color = Color.WHITE
     }
@@ -94,7 +94,7 @@ class DiceView @JvmOverloads constructor(
         val avatar =
             Bitmap.createBitmap(dp2px(context, 30), dp2px(context, 30), Bitmap.Config.ARGB_8888)
         Canvas(avatar).drawOval(
-            RectF(0f, 0f, dp2px(context, 30).toFloat(), dp2px(context, 30).toFloat()),
+            0f, 0f, avatar.width.toFloat(), avatar.height.toFloat(),
             mPaint
         )
         mPlayerAvatarBitmap = avatar
