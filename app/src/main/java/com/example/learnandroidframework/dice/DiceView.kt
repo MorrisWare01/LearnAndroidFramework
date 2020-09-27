@@ -11,6 +11,7 @@ import android.view.animation.LinearInterpolator
 import android.widget.ScrollView
 import com.example.learnandroidframework.R
 import java.util.*
+import kotlin.random.Random
 
 /**
  * Created by mmw on 2020/9/25.
@@ -20,10 +21,22 @@ class DiceView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
-    
+
     // 建筑物
     private val mBuildingBitmap: Bitmap
     private val mBuildingRect: Rect
+
+    private val mBuildingRightBitmap: Bitmap
+    private val mBuildingRight1Bitmap: Bitmap
+    private val mBuildingRight2Bitmap: Bitmap
+    private val mBuildingRightBitmaps: Array<Bitmap>
+
+    private val mBuildingLeftBitmap: Bitmap
+    private val mBuildingLeft1Bitmap: Bitmap
+    private val mBuildingLeftBitmaps: Array<Bitmap>
+
+    private val srcRect = Rect()
+    private val dstRect = Rect()
 
     // 玩家
     private val mPlayerBitmap: Bitmap
@@ -54,7 +67,16 @@ class DiceView @JvmOverloads constructor(
     private val dicePlayer = DicePlayer()
 
     init {
-        val widthPixels = context.resources.displayMetrics.widthPixels
+        mBuildingLeftBitmap = BitmapFactory.decodeResource(resources, R.mipmap.dice_build_left_1)
+        mBuildingLeft1Bitmap = BitmapFactory.decodeResource(resources, R.mipmap.dice_build_left_2)
+        mBuildingLeftBitmaps = arrayOf(mBuildingLeftBitmap, mBuildingLeft1Bitmap)
+
+        mBuildingRightBitmap = BitmapFactory.decodeResource(resources, R.mipmap.dice_build_right_1)
+        mBuildingRight1Bitmap = BitmapFactory.decodeResource(resources, R.mipmap.dice_build_right_2)
+        mBuildingRight2Bitmap = BitmapFactory.decodeResource(resources, R.mipmap.dice_build_right_3)
+        mBuildingRightBitmaps =
+            arrayOf(mBuildingRightBitmap, mBuildingRight1Bitmap, mBuildingRight2Bitmap)
+
         val tmp = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(tmp)
         canvas.drawColor(Color.parseColor("#b38d74"))
@@ -110,7 +132,12 @@ class DiceView @JvmOverloads constructor(
                         y,
                         x + mBuildingBitmap.width,
                         y + mBuildingBitmap.height
-                    )
+                    ),
+                    when (i) {
+                        0 -> mBuildingRightBitmap
+                        1 -> mBuildingRight1Bitmap
+                        else -> mBuildingRightBitmaps[Random.nextInt(mBuildingRightBitmaps.size)]
+                    }
                 )
             )
             diceBuildingList.add(
@@ -120,7 +147,8 @@ class DiceView @JvmOverloads constructor(
                         y - leftBottom,
                         mBuildingBitmap.width,
                         y - leftBottom + mBuildingBitmap.height
-                    )
+                    ),
+                    mBuildingLeftBitmaps[Random.nextInt(mBuildingLeftBitmaps.size)]
                 )
             )
         }
@@ -185,6 +213,7 @@ class DiceView @JvmOverloads constructor(
         }
 
         dicePlayer.chess = diceChessList[0]
+        dicePlayer.chess?.type = null
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -194,8 +223,30 @@ class DiceView @JvmOverloads constructor(
         canvas.drawColor(Color.parseColor("#c2bace"))
 
         // 绘制建筑
-        for ((rect) in diceBuildingList) {
-            canvas.drawBitmap(mBuildingBitmap, mBuildingRect, rect, mPaint)
+//        for ((rect) in diceBuildingList) {
+//            canvas.drawBitmap(mBuildingBitmap, mBuildingRect, rect, mPaint)
+//        }
+        for (i in diceBuildingList.size - 1 downTo 0) {
+            val item = diceBuildingList[i]
+            val rect = item.rect
+            val bitmap = item.bitmap
+
+            srcRect.set(0, 0, bitmap.width, bitmap.height)
+
+            val dstHeight = rect.width() * bitmap.height / bitmap.width
+
+            dstRect.set(
+                rect.left,
+                (rect.bottom - dstHeight),
+                rect.left + rect.width(),
+                rect.bottom
+            )
+            canvas.drawBitmap(
+                bitmap,
+                srcRect,
+                dstRect,
+                mPaint
+            )
         }
 
         for ((index, item) in diceChessList.withIndex()) {
@@ -275,7 +326,9 @@ class DiceView @JvmOverloads constructor(
                 mPlayerBitmap.height.toFloat()
             )
 
-            updatePlayerPosition((chess.rect.top.toFloat() - mPlayerBitmap.height * 0.8f).toInt())
+            if (!dicePlayer.isRunning) {
+                updatePlayerPosition((chess.rect.top.toFloat() - mPlayerBitmap.height * 0.8f).toInt())
+            }
 
             // 绘制角色背景
             canvas.drawBitmap(mPlayerBitmap, 0f, 0f, mPaint)
@@ -423,7 +476,7 @@ class DiceView @JvmOverloads constructor(
     private fun updatePlayerPosition(top: Int) {
         val scrollView = parent
         if (scrollView is ScrollView) {
-            scrollView.scrollTo(0, top - scrollView.height / 2)
+            scrollView.smoothScrollTo(0, top - scrollView.height / 2)
         }
     }
 
