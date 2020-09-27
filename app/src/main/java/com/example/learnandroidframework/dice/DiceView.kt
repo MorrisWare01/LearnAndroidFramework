@@ -491,7 +491,7 @@ class DiceView @JvmOverloads constructor(
     }
 
     private fun onPlayerStop() {
-        // 禁止上下滑动
+        // 开启上下滑动
         val scrollView = parent
         if (scrollView is ScrollView) {
             scrollView.setOnTouchListener(null)
