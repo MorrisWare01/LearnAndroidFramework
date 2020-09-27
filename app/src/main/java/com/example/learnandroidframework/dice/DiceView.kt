@@ -285,7 +285,7 @@ class DiceView @JvmOverloads constructor(
                         canvas.save()
                         canvas.translate(
                             item.rect.left.toFloat() + (mBoardRect.width() - mCoinBitmap.width) / 2.toFloat(),
-                            item.rect.top.toFloat() - mPlayerBitmap.height * 0.68f
+                            item.rect.top.toFloat() - mPlayerBitmap.height * 0.7f
                         )
                         canvas.drawBitmap(mCoinBitmap, 0f, 0f, mPaint)
                         canvas.restore()
@@ -294,7 +294,7 @@ class DiceView @JvmOverloads constructor(
                         canvas.save()
                         canvas.translate(
                             item.rect.left.toFloat() + (mBoardRect.width() - mTrapBitmap.width) / 2.toFloat(),
-                            item.rect.top.toFloat() - mPlayerBitmap.height * 0.58f
+                            item.rect.top.toFloat() - mPlayerBitmap.height * 0.6f
                         )
                         canvas.drawBitmap(mTrapBitmap, 0f, 0f, mPaint)
                         canvas.restore()
@@ -303,7 +303,7 @@ class DiceView @JvmOverloads constructor(
                         canvas.save()
                         canvas.translate(
                             item.rect.left.toFloat() + (mBoardRect.width() - mEventBitmap.width) / 2.toFloat(),
-                            item.rect.top.toFloat() - mPlayerBitmap.height * 0.65f
+                            item.rect.top.toFloat() - mPlayerBitmap.height * 0.7f
                         )
                         canvas.drawBitmap(mEventBitmap, 0f, 0f, mPaint)
                         canvas.restore()
@@ -318,7 +318,7 @@ class DiceView @JvmOverloads constructor(
             canvas.save()
             canvas.translate(
                 chess.rect.left.toFloat() + (chess.rect.width() - mPlayerBitmap.width) / 2.toFloat(),
-                chess.rect.top.toFloat() - mPlayerBitmap.height * 0.8f
+                chess.rect.top.toFloat() - mPlayerBitmap.height * 1f
             )
             canvas.translate(dicePlayer.translateX, dicePlayer.translateY)
             canvas.scale(

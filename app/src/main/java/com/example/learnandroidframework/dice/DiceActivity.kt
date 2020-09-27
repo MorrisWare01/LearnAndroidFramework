@@ -46,7 +46,7 @@ class DiceActivity : AppCompatActivity() {
 
             mHandler.postDelayed({
                 diceAnimDrawable.stop()
-                val num = Random.nextInt(5) + 1
+                val num = Random.nextInt(6) + 1
                 ivDice.setImageResource(
                     when (num) {
                         1 -> R.mipmap.dice_1
