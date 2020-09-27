@@ -398,7 +398,7 @@ class DiceView @JvmOverloads constructor(
             invalidate()
         }
         val squash = ObjectAnimator.ofFloat(player, scaleYProperty, 0.6f).setDuration(100)
-        val stretch = ObjectAnimator.ofFloat(player, scaleYProperty, 1.2f).setDuration(100)
+        val stretch = ObjectAnimator.ofFloat(player, scaleYProperty, 1.1f).setDuration(100)
         val scaleBack = ObjectAnimator.ofFloat(player, scaleYProperty, 1f).setDuration(100)
         val jumpUpSet = AnimatorSet()
         jumpUpSet.playTogether(jumpUp, stretch)
