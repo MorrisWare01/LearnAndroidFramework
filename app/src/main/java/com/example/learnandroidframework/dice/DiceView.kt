@@ -3,13 +3,12 @@ package com.example.learnandroidframework.dice
 import android.animation.*
 import android.content.Context
 import android.graphics.*
-import android.graphics.drawable.ShapeDrawable
-import android.graphics.drawable.shapes.OvalShape
 import android.text.TextPaint
 import android.util.AttributeSet
 import android.util.Property
 import android.view.View
 import android.view.animation.LinearInterpolator
+import android.widget.ScrollView
 import com.example.learnandroidframework.R
 import java.util.*
 
@@ -21,6 +20,7 @@ class DiceView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
+    
     // 建筑物
     private val mBuildingBitmap: Bitmap
     private val mBuildingRect: Rect
@@ -275,6 +275,8 @@ class DiceView @JvmOverloads constructor(
                 mPlayerBitmap.height.toFloat()
             )
 
+            updatePlayerPosition((chess.rect.top.toFloat() - mPlayerBitmap.height * 0.8f).toInt())
+
             // 绘制角色背景
             canvas.drawBitmap(mPlayerBitmap, 0f, 0f, mPaint)
             // 绘制角色头像
@@ -290,14 +292,18 @@ class DiceView @JvmOverloads constructor(
     }
 
     private fun go(player: DicePlayer, items: List<DiceChess>) {
-        if (player.isRunning) {
+        val chessItem = player.chess ?: return
+
+        if (player.deferredStepCount == 0) {
+            player.isRunning = false
+            player.reset()
             return
         }
-        val chessItem = player.chess
-        if (chessItem == null) {
-            return
-        }
-        val nextChessItem = items[(items.indexOf(chessItem) + 1) % items.size]
+        // 步进单位
+        val stepIn = if (dicePlayer.deferredStepCount > 0) 1 else -1
+
+        // 路径
+        val nextChessItem = items[(items.indexOf(chessItem) + stepIn) % items.size]
         val jumpUp = ValueAnimator.ofFloat(0f, 0.5f)
         jumpUp.duration = 250
         jumpUp.addUpdateListener { animation ->
@@ -357,14 +363,19 @@ class DiceView @JvmOverloads constructor(
                 super.onAnimationEnd(animation)
                 // 切换到下一位
                 player.chess = nextChessItem
-                player.translateX = 0f
-                player.translateY = 0f
-                player.scaleX = 1f
-                player.scaleY = 1f
+                player.reset()
                 invalidate()
-                player.isRunning = false
 
-                // 触发事件
+                // 下一步
+                player.deferredStepCount -= stepIn
+                if (player.deferredStepCount != 0) {
+                    go(player, diceChessList)
+                } else {
+                    player.isRunning = false
+
+                    // 触发道具
+                    nextChessItem.type = null
+                    invalidate()
 //                switch (nextChessItem.get) {
 //                    case 1:
 //                        Log.d("TAG", "触发钻石事件");
@@ -382,24 +393,21 @@ class DiceView @JvmOverloads constructor(
 //                        Log.d("TAG", "触发碎片事件");
 //                        break;
 //                }
+                }
             }
 
             override fun onAnimationCancel(animation: Animator) {
                 super.onAnimationCancel(animation)
-                // 恢复原位
-                player.translateX = 0f
-                player.translateY = 0f
-                player.scaleX = 1f
-                player.scaleY = 1f
-                invalidate()
                 player.isRunning = false
+                player.reset()
+                invalidate()
             }
         })
         animatorSet.playSequentially(squash, jumpUpSet, jumpDownSet)
         animatorSet.start()
     }
 
-    val scaleYProperty: Property<DicePlayer, Float> = object : Property<DicePlayer, Float>(
+    private val scaleYProperty: Property<DicePlayer, Float> = object : Property<DicePlayer, Float>(
         Float::class.java, "scaleY"
     ) {
         override fun get(`object`: DicePlayer): Float {
@@ -412,8 +420,23 @@ class DiceView @JvmOverloads constructor(
         }
     }
 
-    fun go() {
+    private fun updatePlayerPosition(top: Int) {
+        val scrollView = parent
+        if (scrollView is ScrollView) {
+            scrollView.scrollTo(0, top - scrollView.height / 2)
+        }
+    }
+
+    fun go(steps: Int) {
+        if (dicePlayer.isRunning) {
+            return
+        }
+        dicePlayer.deferredStepCount += steps
         go(dicePlayer, diceChessList)
+    }
+
+    fun isPlayerRunning(): Boolean {
+        return dicePlayer.isRunning
     }
 
 }
