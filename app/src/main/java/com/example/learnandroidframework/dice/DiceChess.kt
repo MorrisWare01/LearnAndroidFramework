@@ -7,7 +7,8 @@ import android.graphics.Rect
  */
 data class DiceChess(
     val rect: Rect,
-    var type: String? = null
+    var type: String? = null,
+    var consumed: Boolean = false
 ) {
 
     companion object {

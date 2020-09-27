@@ -270,42 +270,44 @@ class DiceView @JvmOverloads constructor(
             canvas.restore()
 
             // 绘制道具
-            when (item.type) {
-                DiceChess.TYPE_RED_BAG -> {
-                    canvas.save()
-                    canvas.translate(
-                        item.rect.left.toFloat() + (mBoardRect.width() - mRedBagBitmap.width) / 2.toFloat(),
-                        item.rect.top.toFloat() - mPlayerBitmap.height * 0.65f
-                    )
-                    canvas.drawBitmap(mRedBagBitmap, 0f, 0f, mPaint)
-                    canvas.restore()
-                }
-                DiceChess.TYPE_COIN -> {
-                    canvas.save()
-                    canvas.translate(
-                        item.rect.left.toFloat() + (mBoardRect.width() - mCoinBitmap.width) / 2.toFloat(),
-                        item.rect.top.toFloat() - mPlayerBitmap.height * 0.68f
-                    )
-                    canvas.drawBitmap(mCoinBitmap, 0f, 0f, mPaint)
-                    canvas.restore()
-                }
-                DiceChess.TYPE_TRAP -> {
-                    canvas.save()
-                    canvas.translate(
-                        item.rect.left.toFloat() + (mBoardRect.width() - mTrapBitmap.width) / 2.toFloat(),
-                        item.rect.top.toFloat() - mPlayerBitmap.height * 0.58f
-                    )
-                    canvas.drawBitmap(mTrapBitmap, 0f, 0f, mPaint)
-                    canvas.restore()
-                }
-                DiceChess.TYPE_EVENT -> {
-                    canvas.save()
-                    canvas.translate(
-                        item.rect.left.toFloat() + (mBoardRect.width() - mEventBitmap.width) / 2.toFloat(),
-                        item.rect.top.toFloat() - mPlayerBitmap.height * 0.65f
-                    )
-                    canvas.drawBitmap(mEventBitmap, 0f, 0f, mPaint)
-                    canvas.restore()
+            if (!item.consumed) {
+                when (item.type) {
+                    DiceChess.TYPE_RED_BAG -> {
+                        canvas.save()
+                        canvas.translate(
+                            item.rect.left.toFloat() + (mBoardRect.width() - mRedBagBitmap.width) / 2.toFloat(),
+                            item.rect.top.toFloat() - mPlayerBitmap.height * 0.65f
+                        )
+                        canvas.drawBitmap(mRedBagBitmap, 0f, 0f, mPaint)
+                        canvas.restore()
+                    }
+                    DiceChess.TYPE_COIN -> {
+                        canvas.save()
+                        canvas.translate(
+                            item.rect.left.toFloat() + (mBoardRect.width() - mCoinBitmap.width) / 2.toFloat(),
+                            item.rect.top.toFloat() - mPlayerBitmap.height * 0.68f
+                        )
+                        canvas.drawBitmap(mCoinBitmap, 0f, 0f, mPaint)
+                        canvas.restore()
+                    }
+                    DiceChess.TYPE_TRAP -> {
+                        canvas.save()
+                        canvas.translate(
+                            item.rect.left.toFloat() + (mBoardRect.width() - mTrapBitmap.width) / 2.toFloat(),
+                            item.rect.top.toFloat() - mPlayerBitmap.height * 0.58f
+                        )
+                        canvas.drawBitmap(mTrapBitmap, 0f, 0f, mPaint)
+                        canvas.restore()
+                    }
+                    DiceChess.TYPE_EVENT -> {
+                        canvas.save()
+                        canvas.translate(
+                            item.rect.left.toFloat() + (mBoardRect.width() - mEventBitmap.width) / 2.toFloat(),
+                            item.rect.top.toFloat() - mPlayerBitmap.height * 0.65f
+                        )
+                        canvas.drawBitmap(mEventBitmap, 0f, 0f, mPaint)
+                        canvas.restore()
+                    }
                 }
             }
         }
@@ -326,9 +328,7 @@ class DiceView @JvmOverloads constructor(
                 mPlayerBitmap.height.toFloat()
             )
 
-            if (!dicePlayer.isRunning) {
-                updatePlayerPosition((chess.rect.top.toFloat() - mPlayerBitmap.height * 0.8f).toInt())
-            }
+            updatePlayerPosition()
 
             // 绘制角色背景
             canvas.drawBitmap(mPlayerBitmap, 0f, 0f, mPaint)
@@ -427,25 +427,10 @@ class DiceView @JvmOverloads constructor(
                     player.isRunning = false
 
                     // 触发道具
-                    nextChessItem.type = null
+                    nextChessItem.consumed = true
                     invalidate()
-//                switch (nextChessItem.get) {
-//                    case 1:
-//                        Log.d("TAG", "触发钻石事件");
-//                        break;
-//                    case 2:
-//                        Log.d("TAG", "触发PK事件");
-//                        break;
-//                    case 3:
-//                        Log.d("TAG", "触发陷阱事件，回到起点");
-//                        player.chessItem = items.get(0);
-//                        Path path = new Path();
-//
-//                        break;
-//                    case 4:
-//                        Log.d("TAG", "触发碎片事件");
-//                        break;
-//                }
+
+                    onPlayerStop()
                 }
             }
 
@@ -473,7 +458,13 @@ class DiceView @JvmOverloads constructor(
         }
     }
 
-    private fun updatePlayerPosition(top: Int) {
+    private fun updatePlayerPosition() {
+        if (dicePlayer.isRunning) {
+            return
+        }
+        val chess = dicePlayer.chess ?: return
+        val top = (chess.rect.top.toFloat() - mPlayerBitmap.height * 0.8f).toInt()
+
         val scrollView = parent
         if (scrollView is ScrollView) {
             scrollView.smoothScrollTo(0, top - scrollView.height / 2)
@@ -484,8 +475,34 @@ class DiceView @JvmOverloads constructor(
         if (dicePlayer.isRunning) {
             return
         }
+
+        // 禁止上下滑动
+        val scrollView = parent
+        if (scrollView is ScrollView) {
+            scrollView.setOnTouchListener { _, _ -> true }
+        }
+
+        // 移到中间
+        updatePlayerPosition()
+
+        // 开始动画
         dicePlayer.deferredStepCount += steps
         go(dicePlayer, diceChessList)
+    }
+
+    private fun onPlayerStop() {
+        // 禁止上下滑动
+        val scrollView = parent
+        if (scrollView is ScrollView) {
+            scrollView.setOnTouchListener(null)
+        }
+
+        // 触发道具
+        when (dicePlayer.chess?.type) {
+            DiceChess.TYPE_RED_BAG -> {
+
+            }
+        }
     }
 
     fun isPlayerRunning(): Boolean {
