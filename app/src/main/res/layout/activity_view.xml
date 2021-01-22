@@ -8,9 +8,8 @@
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="200dp"
         android:clipToPadding="false"
-        android:paddingTop="200dp">
+        android:paddingBottom="200dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -62,6 +61,14 @@
                 android:text="跳跃"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
+
+            <Button
+                android:id="@+id/btn_position"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="定位"
+                app:layout_constraintStart_toEndOf="@id/btn_go"
+                app:layout_constraintTop_toTopOf="@id/btn_go" />
 
             <com.example.learnandroidframework.view.MainView
                 android:layout_width="match_parent"

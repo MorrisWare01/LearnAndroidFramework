@@ -87,6 +87,11 @@
             android:layout_height="wrap_content"
             android:text="MOBLINK TEST" />
 
+        <Button
+            android:id="@+id/lottieTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="lottie TEST" />
 
     </LinearLayout>
 </ScrollView>

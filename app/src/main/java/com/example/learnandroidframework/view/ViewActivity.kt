@@ -1,12 +1,12 @@
 package com.example.learnandroidframework.view
 
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.view.ViewTreeObserver
 import android.view.Window
 import android.view.WindowManager
-import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.learnandroidframework.R
 
@@ -18,13 +18,29 @@ class ViewActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.requestFeature(Window.FEATURE_NO_TITLE)
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window.statusBarColor = Color.TRANSPARENT
-        window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
+//        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+//        window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            window.attributes.layoutInDisplayCutoutMode =
+                WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+//                WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_NEVER
+//                WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT
+        }
+
+        window.statusBarColor = Color.BLUE
+        window.decorView.systemUiVisibility = (window.decorView.systemUiVisibility
+//                or View.SYSTEM_UI_FLAG_IMMERSIVE
+                or View.SYSTEM_UI_FLAG_FULLSCREEN
+//                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                )
+
+
+        // test
+        window.decorView.elevation = 50f
 
         setContentView(R.layout.activity_view)
 
@@ -39,9 +55,12 @@ class ViewActivity : AppCompatActivity() {
 //        })
 
         val chessBoardView = findViewById<ChessBoardView>(R.id.chess_board)
-        findViewById<View>(R.id.btn_go).setOnClickListener {
-            chessBoardView.goTest()
+
+        chessBoardView.setOnApplyWindowInsetsListener { v, insets ->
+            Log.d("TAG", insets.toString())
+            insets
         }
+
         findViewById<View>(R.id.btn_start).setOnClickListener {
             chessBoardView.gameGo()
         }
@@ -50,6 +69,19 @@ class ViewActivity : AppCompatActivity() {
         }
         findViewById<View>(R.id.btn_load_cube_scene).setOnClickListener {
             chessBoardView.loadCubeScene()
+        }
+
+        findViewById<View>(R.id.btn_go).setOnClickListener {
+            chessBoardView.goTest()
+        }
+        findViewById<View>(R.id.btn_position).setOnClickListener {
+            val view = it
+            val intArray = IntArray(2)
+            if (Build.VERSION.SDK_INT >= 29) {
+                view.getLocationInSurface(intArray)
+            }
+            view.getLocationInWindow(intArray)
+            view.getLocationOnScreen(intArray)
         }
     }
 

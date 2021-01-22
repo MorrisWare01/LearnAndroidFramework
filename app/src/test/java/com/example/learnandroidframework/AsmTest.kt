@@ -15,11 +15,11 @@ class AsmTest {
     fun test() {
 //        val classReader = ClassReader(Account::class.java.name)
 //        val classWriter = ClassWriter(ClassWriter.COMPUTE_MAXS)
-        val file = File("/text.txt")
-        file.createNewFile()
-        println(File("http://www.baidu.com").exists())
-        println(file.absolutePath)
-        println(File(file.absolutePath).exists())
+//        val file = File("/text.txt")
+//        file.createNewFile()
+//        println(File("http://www.baidu.com").exists())
+//        println(file.absolutePath)
+//        println(File(file.absolutePath).exists())
     }
 
     class Account {

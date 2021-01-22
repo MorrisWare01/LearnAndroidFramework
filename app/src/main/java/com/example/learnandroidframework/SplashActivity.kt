@@ -2,7 +2,11 @@ package com.example.learnandroidframework
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
@@ -108,6 +112,33 @@ class SplashActivity : AppCompatActivity() {
         startNavigationTestActivity.setOnClickListener {
             startActivity(Intent(this, NavigationTestActivity::class.java))
         }
+        lottieTest.setOnClickListener {
+//            startActivity(Intent(this, LottieTestActivity::class.java))
+            try {
+                val packageName = "com.huawei.hwid"
+                if (isApkInstalled(this, packageName)) {
+                    startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                        data = Uri.parse("package:$packageName")
+                    })
+                } else {
+                    startActivity(Intent(Settings.ACTION_SETTINGS))
+                }
+            } catch (e: Exception) {
+                Log.e("TAG", e.message ?: "")
+            }
+        }
+        Log.d("TAG", Build.MANUFACTURER)
+    }
+
+    fun isApkInstalled(context: Context, packageName: String): Boolean {
+        // 获取packagemanager
+        val packageManager = context.packageManager
+        try {
+            packageManager.getPackageInfo(packageName, 0)
+        } catch (e: PackageManager.NameNotFoundException) {
+            return false
+        }
+        return true
     }
 
     @SuppressLint("HardwareIds")

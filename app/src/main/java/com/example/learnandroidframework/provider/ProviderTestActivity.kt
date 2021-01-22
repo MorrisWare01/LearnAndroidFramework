@@ -12,6 +12,7 @@ import androidx.core.content.FileProvider
 import com.example.learnandroidframework.R
 import kotlinx.android.synthetic.main.activity_provider_test.*
 import java.io.File
+import java.io.FileInputStream
 
 /**
  * @author mmw
@@ -50,9 +51,9 @@ class ProviderTestActivity : AppCompatActivity() {
             }
         }
         installApk.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW)
             val file = File(getExternalFilesDir("Download"), "demo.apk")
             if (file.exists()) {
+                val intent = Intent(Intent.ACTION_VIEW)
                 val uri = FileProvider.getUriForFile(this, packageName, file)
                 intent.setDataAndType(uri, "application/vnd.android.package-archive")
 //                grantUriPermission(

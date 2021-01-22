@@ -5,6 +5,7 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
+import com.example.learnandroidframework.R
 
 /**
  * @author mmw
@@ -26,6 +27,11 @@ class MainView @JvmOverloads constructor(
 //        style = Paint.Style.STROKE
         color = Color.RED
     }
+
+    private val mBitmap = BitmapFactory.decodeResource(resources, R.mipmap.dice_build_left_1)
+    private val mSrcRect = Rect(0, 0, mBitmap.width, mBitmap.height)
+    private val mDstRect = Rect(500, 0, 500 + mBitmap.width, mBitmap.height)
+
 
     private val maxHeight: Int = (context.resources.displayMetrics.density * 200).toInt()
 
@@ -88,6 +94,13 @@ class MainView @JvmOverloads constructor(
             ), Path.Direction.CW
         )
         canvas.drawPath(mPath, mPaint)
+        canvas.restore()
+
+        canvas.save()
+        canvas.translate(50f, 0f)
+        canvas.scale(-1f, 1f, (mBitmap.width / 2 + 500).toFloat(), (mBitmap.height / 2).toFloat())
+//        canvas.drawBitmap(mBitmap, 0f, 0f, null)
+        canvas.drawBitmap(mBitmap, mSrcRect, mDstRect, null)
         canvas.restore()
     }
 

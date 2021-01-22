@@ -68,6 +68,7 @@
         <activity
             android:name=".dice.DiceActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".lottie.LottieTestActivity" />
 
         <service android:name=".service.MainService" />
         <service android:name=".service.AidlService" />

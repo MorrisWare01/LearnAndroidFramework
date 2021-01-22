@@ -54,23 +54,24 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        val viewId = view?.id ?: android.R.id.text1
         Log.d("TAG", "onActivityCreated")
         val text = arguments?.getString("name")
         if ("A" == text) {
             val mainFragment = newInstance("AA")
             childFragmentManager.beginTransaction()
-                .add(view!!.id, newInstance("B"), "B")
-                .add(view!!.id, newInstance("C"), "C")
-                .add(view!!.id, mainFragment, "AA")
+                .add(viewId, newInstance("B"), "B")
+                .add(viewId, newInstance("C"), "C")
+                .add(viewId, mainFragment, "AA")
 //                .setPrimaryNavigationFragment(mainFragment)
                 .addToBackStack("AA")
                 .commitAllowingStateLoss()
         } else if ("AA" == text) {
             val mainFragment = newInstance("AAA")
             childFragmentManager.beginTransaction()
-                .add(view!!.id, newInstance("BB"), "BB")
-                .add(view!!.id, newInstance("CC"), "CC")
-                .add(view!!.id, mainFragment, "AAA")
+                .add(viewId, newInstance("BB"), "BB")
+                .add(viewId, newInstance("CC"), "CC")
+                .add(viewId, mainFragment, "AAA")
 //                .setPrimaryNavigationFragment(mainFragment)
                 .addToBackStack("AAA")
                 .commitAllowingStateLoss()
