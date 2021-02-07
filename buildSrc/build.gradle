@@ -1,0 +1,22 @@
+def prefix = "PPPPPPPPPPPPPPPPPP->"
+
+println("$prefix run on ProjecPreparer")
+
+task buildTask {
+    doLast {
+        println("$prefix buildTask")
+    }
+}
+
+tasks.findByName("build").dependsOn("buildTask")
+
+apply {
+    from "../maven.gradle"
+}
+
+apply([
+        "from": "../base.gradle",
+])
+
+apply from: "../base.gradle"
+

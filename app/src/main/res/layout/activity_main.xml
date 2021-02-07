@@ -93,5 +93,12 @@
             android:layout_height="wrap_content"
             android:text="lottie TEST" />
 
+        <Button
+            android:id="@+id/glideTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="glide TEST" />
+
+
     </LinearLayout>
 </ScrollView>
