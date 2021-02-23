@@ -22,15 +22,22 @@
         android:layout_height="wrap_content"
         android:text="load" />
 
-    <FrameLayout
-        android:id="@+id/container"
+    <Button
+        android:id="@+id/btn_flip"
         android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        android:layout_height="wrap_content"
+        android:text="flip" />
 
     <ImageView
         android:id="@+id/image"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="matrix" />
+
+    <FrameLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
 
 </LinearLayout>

@@ -22,6 +22,7 @@ import com.example.learnandroidframework.dice.DiceActivity
 import com.example.learnandroidframework.fragment.FragmentTestActivity
 import com.example.learnandroidframework.fragment.NavigationTestActivity
 import com.example.learnandroidframework.glide.GlideActivity
+import com.example.learnandroidframework.okhttp.OKHttpActivity
 import com.example.learnandroidframework.provider.ProviderTestActivity
 import com.example.learnandroidframework.receiver.BroadcastReceiverTestActivity
 import com.example.learnandroidframework.service.ServiceTestActivity
@@ -131,6 +132,9 @@ class SplashActivity : AppCompatActivity() {
         Log.d("TAG", Build.MANUFACTURER)
         glideTest.setOnClickListener {
             startActivity(Intent(this, GlideActivity::class.java))
+        }
+        okhttpTest.setOnClickListener {
+            startActivity(Intent(this, OKHttpActivity::class.java))
         }
     }
 
