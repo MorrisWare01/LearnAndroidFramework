@@ -106,5 +106,12 @@
             android:text="okhttp TEST" />
 
 
+        <Button
+            android:id="@+id/configurationTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="configurationTest" />
+
+
     </LinearLayout>
 </ScrollView>

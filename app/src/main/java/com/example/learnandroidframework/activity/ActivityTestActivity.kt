@@ -64,6 +64,9 @@ class ActivityTestActivity : AppCompatActivity() {
                 addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
             })
         }
+        startFullscreenActivity.setOnClickListener {
+            startActivity(Intent(this, FullscreenActivity::class.java))
+        }
     }
 
     override fun onNewIntent(intent: Intent?) {

@@ -20,7 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name="com.example.learnandroidframework.SplashActivity">
+        <activity
+            android:name="com.example.learnandroidframework.SplashActivity"
+            android:configChanges="screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -73,6 +75,9 @@
         <activity android:name=".lottie.LottieTestActivity" />
         <activity android:name=".glide.GlideActivity" />
         <activity android:name=".okhttp.OKHttpActivity" />
+        <activity
+            android:name=".activity.main.FullscreenActivity"
+            android:configChanges="orientation|screenSize" />
 
         <service android:name=".service.MainService" />
         <service android:name=".service.AidlService" />

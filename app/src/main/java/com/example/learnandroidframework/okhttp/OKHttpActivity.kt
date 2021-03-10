@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import okhttp3.*
 import java.io.IOException
+import java.net.Proxy
 
 /**
  * Created by mmw on 2021/2/23.
@@ -12,6 +13,7 @@ class OKHttpActivity : AppCompatActivity() {
 
     companion object {
         val okHttpClient: Call.Factory = OkHttpClient.Builder()
+//            .proxy(Proxy(Proxy.Type.HTTP, ))
             .build()
     }
 
@@ -20,6 +22,7 @@ class OKHttpActivity : AppCompatActivity() {
 
         okHttpClient.newCall(
             Request.Builder()
+                .url("https://www.baidu.com")
                 .build()
         ).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {

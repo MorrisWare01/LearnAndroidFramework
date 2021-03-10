@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -134,7 +135,16 @@ class SplashActivity : AppCompatActivity() {
             startActivity(Intent(this, GlideActivity::class.java))
         }
         okhttpTest.setOnClickListener {
-            startActivity(Intent(this, OKHttpActivity::class.java))
+//            startActivity(Intent(this, OKHttpActivity::class.java))
+            val clazz = Class.forName("android.app.Activity.Manager")
+            val methods = clazz.declaredMethods
+        }
+        configurationTest.setOnClickListener {
+            if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            } else {
+                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            }
         }
     }
 
