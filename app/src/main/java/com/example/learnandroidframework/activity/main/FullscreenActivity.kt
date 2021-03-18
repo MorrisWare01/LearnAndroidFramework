@@ -153,7 +153,6 @@ class FullscreenActivity : AppCompatActivity() {
                         window.decorView.systemUiVisibility.or(View.SYSTEM_UI_FLAG_LOW_PROFILE)
                 }
             }
-
         }
         btnRotation.setOnClickListener {
             requestedOrientation =
@@ -166,6 +165,10 @@ class FullscreenActivity : AppCompatActivity() {
         btnDrawStatusBar.setOnClickListener {
             window.decorView.systemUiVisibility = 0
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        }
+        btnDrawSystemBar.setOnClickListener {
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
         }
     }
 

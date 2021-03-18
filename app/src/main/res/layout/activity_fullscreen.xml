@@ -63,6 +63,12 @@
         android:layout_height="wrap_content"
         android:text="消耗顶部状态栏" />
 
+    <Button
+        android:id="@+id/btnDrawSystemBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="布局填充系统栏" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
