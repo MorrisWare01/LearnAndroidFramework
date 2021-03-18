@@ -22,12 +22,12 @@ import kotlinx.android.synthetic.main.activity_fullscreen.*
  * View.SYSTEM_UI_FLAG_IMMERSIVE 设置沉浸模式，用户可通过顶部下滑和底部上滑显示Bar，拦截动作不传递到应用中，状态栏会恢复（systemUiVisibility值变成0）
  * View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY 设置粘性沉浸模式，用户通过顶部下滑和底部上滑显示Bar，不拦截动作传递到应用中, 状态栏会自动隐藏
  * View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR 设置状态栏黑色字体
- * View.SYSTEM_UI_FLAG_LOW_PROFILE 官方说是调暗状态栏
+ * View.SYSTEM_UI_FLAG_LOW_PROFILE 隐藏状态栏上的应用图标
  * View.SYSTEM_UI_FLAG_LAYOUT_STABLE 设置后保存应用大小不变，例如:状态栏隐藏后白色填充高度
  */
 class FullscreenActivity : AppCompatActivity() {
 
-    private var useWindowInsetsController = true
+    private var useWindowInsetsController = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,18 +38,25 @@ class FullscreenActivity : AppCompatActivity() {
         }
         setContentView(R.layout.activity_fullscreen)
 
+        btnMode.text =
+            if (useWindowInsetsController) "当前基于WindowInsetsController" else "当前基于systemUiVisibility"
+
         btnMode.setOnClickListener {
             if (!useWindowInsetsController) {
-                btnMode.text = "基于WindowInsetsController"
-            } else {
-                btnMode.text = "基于systemUiVisibility"
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+                    Toast.makeText(this, "当前系统版本不支持WindowInsetsController", Toast.LENGTH_SHORT)
+                        .show()
+                    return@setOnClickListener
+                }
             }
+            useWindowInsetsController = !useWindowInsetsController
+            btnMode.text =
+                if (useWindowInsetsController) "当前基于WindowInsetsController" else "当前基于systemUiVisibility"
             window.decorView.systemUiVisibility = 0
             window.decorView.windowInsetsController?.apply {
                 show(WindowInsets.Type.systemBars())
                 systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_BARS_BY_TOUCH
             }
-            useWindowInsetsController = !useWindowInsetsController
         }
         btnFullscreen.setOnClickListener {
             if (useWindowInsetsController) {
