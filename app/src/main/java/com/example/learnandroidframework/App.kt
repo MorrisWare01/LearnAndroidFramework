@@ -40,31 +40,31 @@ class App : Application() {
                 isInited = true
                 activity.startActivity(Intent(activity, TestSplashActivity::class.java))
             }
-            Log.d("TAG", "${activity.componentName}: onActivityCreated")
+            Log.d("App", "${activity.componentName}: onActivityCreated")
         }
 
         override fun onActivityStarted(activity: Activity) {
-            Log.d("TAG", "${activity.componentName}onActivityStarted")
+            Log.d("App", "${activity.componentName}onActivityStarted")
         }
 
         override fun onActivityResumed(activity: Activity) {
-            Log.d("TAG", "${activity.componentName}: onActivityResumed")
+            Log.d("App", "${activity.componentName}: onActivityResumed")
         }
 
         override fun onActivityPaused(activity: Activity) {
-            Log.d("TAG", "${activity.componentName}: onActivityPaused")
+            Log.d("App", "${activity.componentName}: onActivityPaused")
         }
 
         override fun onActivityStopped(activity: Activity) {
-            Log.d("TAG", "${activity.componentName}: onActivityStopped")
+            Log.d("App", "${activity.componentName}: onActivityStopped")
         }
 
         override fun onActivityDestroyed(activity: Activity) {
-            Log.d("TAG", "${activity.componentName}: onActivityDestroyed")
+            Log.d("App", "${activity.componentName}: onActivityDestroyed")
         }
 
         override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
-            Log.d("TAG", "${activity.componentName}: onActivitySaveInstanceState")
+            Log.d("App", "${activity.componentName}: onActivitySaveInstanceState")
         }
     }
 

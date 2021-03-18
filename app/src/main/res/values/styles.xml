@@ -10,6 +10,7 @@
         <item name="android:windowSplashscreenContent" tools:targetApi="o">
             @mipmap/ic_launcher
         </item>
+<!--        <item name="android:windowBackground">#ff0000</item>-->
     </style>
 
 </resources>

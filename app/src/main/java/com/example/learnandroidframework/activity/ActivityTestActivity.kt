@@ -1,13 +1,14 @@
 package com.example.learnandroidframework.activity
 
+import android.app.PictureInPictureParams
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.learnandroidframework.R
-import com.example.learnandroidframework.SplashActivity
 import com.example.learnandroidframework.activity.main.*
 import com.example.learnandroidframework.activity.second.SecondActivity
 import kotlinx.android.synthetic.main.activity_activity_test.*
@@ -21,28 +22,12 @@ class ActivityTestActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_activity_test)
+        startLaunchTestActivity.setOnClickListener {
+            // 启动标志
+            startActivity(Intent(this, LaunchTestActivity::class.java))
+        }
         startActivityResult.setOnClickListener {
             startActivityForResult(Intent(this, SecondActivity::class.java), 10)
-        }
-        startSingleTopActivity.setOnClickListener {
-            startActivity(Intent(this, SingleTopActivity::class.java))
-        }
-        startSingleTaskActivity.setOnClickListener {
-            startActivity(Intent(this, SingleTaskActivity::class.java))
-        }
-        startSecondProcessActivity.setOnClickListener {
-            startActivity(Intent(this, SecondActivity::class.java))
-        }
-        startSingleInstanceActivity.setOnClickListener {
-            startActivity(Intent(this, SingleInstanceActivity::class.java))
-        }
-        startNewTaskActivity.setOnClickListener {
-            startActivity(
-                Intent(
-                    this,
-                    NewTaskActivity::class.java
-                ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            )
         }
         startPickerActivity.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
@@ -50,28 +35,54 @@ class ActivityTestActivity : AppCompatActivity() {
             intent.data = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             startActivity(intent)
         }
-        startSaveInstanceActivity.setOnClickListener {
-            startActivity(Intent(this, SaveInstanceTestActivity::class.java))
-        }
-        startActivityByNewDocument.setOnClickListener {
-            startActivity(Intent(this, ActivityTestActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
-            })
-        }
-        startActivityByNewDocumentWithMulti.setOnClickListener {
-            startActivity(Intent(this, ActivityTestActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
-                addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
-            })
-        }
         startFullscreenActivity.setOnClickListener {
+            // systemUiVisibility
             startActivity(Intent(this, FullscreenActivity::class.java))
+        }
+        startTaskOnHomeActivity.setOnClickListener {
+            startActivity(Intent(this, SecondActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_TASK_ON_HOME
+            })
+        }
+        enterPipMode.setOnClickListener {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                enterPictureInPictureMode(
+                    PictureInPictureParams.Builder().build()
+                )
+            }
+        }
+        enterMultiWindow.setOnClickListener {
+
         }
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         Log.d("TAG", "onNewIntent")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Log.d("TAG", "onResume => isInPictureInPictureMode:$isInPictureInPictureMode")
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Log.d("TAG", "onPause => isInPictureInPictureMode:$isInPictureInPictureMode")
+        }
+    }
+
+    override fun onPictureInPictureModeChanged(
+        isInPictureInPictureMode: Boolean,
+        newConfig: Configuration?
+    ) {
+        Log.d(
+            "TAG",
+            "onPictureInPictureModeChanged => isInPictureInPictureMode:$isInPictureInPictureMode"
+        )
     }
 
 }

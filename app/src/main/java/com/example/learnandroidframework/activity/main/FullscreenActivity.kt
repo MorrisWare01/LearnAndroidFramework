@@ -6,10 +6,7 @@ import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.MotionEvent
-import android.view.View
-import android.view.Window
-import android.view.WindowManager
+import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -30,6 +27,8 @@ import kotlinx.android.synthetic.main.activity_fullscreen.*
  */
 class FullscreenActivity : AppCompatActivity() {
 
+    private var useWindowInsetsController = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // AppCompat设置没有标题栏
@@ -39,58 +38,115 @@ class FullscreenActivity : AppCompatActivity() {
         }
         setContentView(R.layout.activity_fullscreen)
 
+        btnMode.setOnClickListener {
+            if (!useWindowInsetsController) {
+                btnMode.text = "基于WindowInsetsController"
+            } else {
+                btnMode.text = "基于systemUiVisibility"
+            }
+            window.decorView.systemUiVisibility = 0
+            window.decorView.windowInsetsController?.apply {
+                show(WindowInsets.Type.systemBars())
+                systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_BARS_BY_TOUCH
+            }
+            useWindowInsetsController = !useWindowInsetsController
+        }
         btnFullscreen.setOnClickListener {
-            window.decorView.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
-                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-                        View.SYSTEM_UI_FLAG_FULLSCREEN or
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            if (useWindowInsetsController) {
+                window.decorView.windowInsetsController?.apply {
+                    systemBarsBehavior =
+                        WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+                    hide(WindowInsets.Type.systemBars() or WindowInsets.Type.displayCutout())
+                }
+            } else {
+                window.decorView.systemUiVisibility =
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
+                            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+                            View.SYSTEM_UI_FLAG_FULLSCREEN or
+                            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            }
         }
         btnLeanback.setOnClickListener {
-            // 设置后，点击屏幕任意位置就重新显示状态栏
-            // 系统会直接拦截触摸事件
-            window.decorView.systemUiVisibility =
-//                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                View.SYSTEM_UI_FLAG_FULLSCREEN or
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            if (useWindowInsetsController) {
+                window.decorView.windowInsetsController?.apply {
+                    systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_BARS_BY_TOUCH
+                    hide(WindowInsets.Type.systemBars())
+                }
+            } else {
+                // 设置后，点击屏幕任意位置就重新显示状态栏
+                // 系统会直接拦截触摸事件
+                window.decorView.systemUiVisibility =
+                    View.SYSTEM_UI_FLAG_FULLSCREEN or
+                            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            }
         }
         btnImmersive.setOnClickListener {
-            // 设置后，顶部下拉/底部上滑重新显示状态栏
-            // 系统会直接拦截触摸事件
-            window.decorView.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_IMMERSIVE or
-                        View.SYSTEM_UI_FLAG_FULLSCREEN or
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            if (useWindowInsetsController) {
+                window.decorView.windowInsetsController?.apply {
+                    systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_BARS_BY_SWIPE
+                    hide(WindowInsets.Type.systemBars())
+                }
+            } else {
+                // 设置后，顶部下拉/底部上滑重新显示状态栏
+                // 系统会直接拦截触摸事件
+                window.decorView.systemUiVisibility =
+                    View.SYSTEM_UI_FLAG_IMMERSIVE or
+                            View.SYSTEM_UI_FLAG_FULLSCREEN or
+                            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            }
         }
         btnStickyImmersive.setOnClickListener {
-            // 设置后，顶部下拉/底部上滑重新显示状态栏
-            // 轻触手势会传递给应用，因此应用也会响应该手势。
-            window.decorView.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
-                        View.SYSTEM_UI_FLAG_FULLSCREEN or
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            if (useWindowInsetsController) {
+                window.decorView.windowInsetsController?.apply {
+                    systemBarsBehavior =
+                        WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+                    hide(WindowInsets.Type.systemBars())
+                }
+            } else {
+                // 设置后，顶部下拉/底部上滑重新显示状态栏
+                // 轻触手势会传递给应用，因此应用也会响应该手势。
+                window.decorView.systemUiVisibility =
+                    View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
+                            View.SYSTEM_UI_FLAG_FULLSCREEN or
+                            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            }
         }
         btnLightStatusBar.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (window.decorView.systemUiVisibility and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR != 0) {
-                    window.decorView.systemUiVisibility =
-                        window.decorView.systemUiVisibility.and(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv())
-                } else {
-                    window.decorView.systemUiVisibility =
-                        window.decorView.systemUiVisibility.or(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
+            if (useWindowInsetsController) {
+                window.decorView.windowInsetsController?.apply {
+                    setSystemBarsAppearance(
+                        WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
+                                WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
+                        WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
+                                WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+                    )
+                }
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (window.decorView.systemUiVisibility and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR != 0) {
+                        window.decorView.systemUiVisibility =
+                            View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+                    } else {
+                        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                    }
                 }
             }
         }
         btnLowProfiler.setOnClickListener {
-            if (window.decorView.systemUiVisibility and View.SYSTEM_UI_FLAG_LOW_PROFILE != 0) {
-                window.decorView.systemUiVisibility =
-                    window.decorView.systemUiVisibility.and(View.SYSTEM_UI_FLAG_LOW_PROFILE.inv())
+            if (useWindowInsetsController) {
+                // 取消
             } else {
-                window.decorView.systemUiVisibility =
-                    window.decorView.systemUiVisibility.or(View.SYSTEM_UI_FLAG_LOW_PROFILE)
+                if (window.decorView.systemUiVisibility and View.SYSTEM_UI_FLAG_LOW_PROFILE != 0) {
+                    window.decorView.systemUiVisibility =
+                        window.decorView.systemUiVisibility.and(View.SYSTEM_UI_FLAG_LOW_PROFILE.inv())
+                } else {
+                    window.decorView.systemUiVisibility =
+                        window.decorView.systemUiVisibility.or(View.SYSTEM_UI_FLAG_LOW_PROFILE)
+                }
             }
+
         }
         btnRotation.setOnClickListener {
             requestedOrientation =

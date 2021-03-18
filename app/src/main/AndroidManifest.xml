@@ -32,7 +32,9 @@
         <activity
             android:name=".activity.ActivityTestActivity"
             android:documentLaunchMode="none"
-            tools:targetApi="lollipop" />
+            android:supportsPictureInPicture="true"
+            tools:targetApi="n" />
+        <activity android:name=".activity.LaunchTestActivity" />
 
         <activity
             android:name="com.example.learnandroidframework.activity.second.SecondActivity"
@@ -78,6 +80,7 @@
         <activity
             android:name=".activity.main.FullscreenActivity"
             android:configChanges="orientation|screenSize" />
+
 
         <service android:name=".service.MainService" />
         <service android:name=".service.AidlService" />

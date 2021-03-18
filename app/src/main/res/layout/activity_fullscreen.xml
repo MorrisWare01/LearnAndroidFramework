@@ -10,6 +10,12 @@
         android:background="#ff0000" />
 
     <Button
+        android:id="@+id/btnMode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="基于WindowInsetsController" />
+
+    <Button
         android:id="@+id/btnFullscreen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
