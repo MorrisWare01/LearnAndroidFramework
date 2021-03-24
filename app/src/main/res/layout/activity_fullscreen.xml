@@ -1,82 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#ff0000" />
-
-    <Button
-        android:id="@+id/btnMode"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="基于WindowInsetsController" />
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btnFullscreen"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="全屏" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="#ff00ff"
+            android:fitsSystemWindows="true" />
 
-    <Button
-        android:id="@+id/btnLeanback"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="向后倾斜模式(隐藏状态栏，点击后显示)" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#ff0000" />
 
-    <Button
-        android:id="@+id/btnImmersive"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="沉浸模式" />
+        <Button
+            android:id="@+id/btnMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="基于WindowInsetsController" />
 
-    <Button
-        android:id="@+id/btnStickyImmersive"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="粘性沉浸模式" />
+        <Button
+            android:id="@+id/btnFullscreen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="全屏" />
 
-    <Button
-        android:id="@+id/btnLightStatusBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="亮色状态栏" />
+        <Button
+            android:id="@+id/btnLeanback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="向后倾斜模式(隐藏状态栏，点击后显示)" />
 
-    <Button
-        android:id="@+id/btnLowProfiler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="调暗系统栏" />
+        <Button
+            android:id="@+id/btnImmersive"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="沉浸模式" />
 
-    <Button
-        android:id="@+id/btnRotation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="旋转屏幕" />
+        <Button
+            android:id="@+id/btnStickyImmersive"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="粘性沉浸模式" />
 
-    <Button
-        android:id="@+id/btnDrawStatusBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="消耗顶部状态栏" />
+        <Button
+            android:id="@+id/btnLightStatusBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="亮色状态栏" />
 
-    <Button
-        android:id="@+id/btnDrawSystemBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="布局填充系统栏" />
+        <Button
+            android:id="@+id/btnLowProfiler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="调暗系统栏" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        <Button
+            android:id="@+id/btnRotation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="旋转屏幕" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#ff0000" />
+        <Button
+            android:id="@+id/btnDrawStatusBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="系统栏透明" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/btnDrawSystemBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="布局填充系统栏" />
+
+        <Button
+            android:id="@+id/btnTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="test" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#ff0000" />
+
+    </LinearLayout>
+</ScrollView>

@@ -80,6 +80,8 @@
         <activity
             android:name=".activity.main.FullscreenActivity"
             android:configChanges="orientation|screenSize" />
+        <activity android:name=".activity.main.ConfigurationActivity" />
+        <activity android:name=".activity.main.ResourcesActivity" />
 
 
         <service android:name=".service.MainService" />

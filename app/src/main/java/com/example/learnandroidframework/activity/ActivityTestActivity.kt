@@ -1,6 +1,7 @@
 package com.example.learnandroidframework.activity
 
 import android.app.PictureInPictureParams
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
@@ -40,7 +41,8 @@ class ActivityTestActivity : AppCompatActivity() {
             startActivity(Intent(this, FullscreenActivity::class.java))
         }
         startTaskOnHomeActivity.setOnClickListener {
-            startActivity(Intent(this, SecondActivity::class.java).apply {
+            startActivity(Intent(this, NewTaskActivity::class.java).apply {
+                // 如果是新的task，点击返回键就返回桌面
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_TASK_ON_HOME
             })
         }
@@ -52,7 +54,12 @@ class ActivityTestActivity : AppCompatActivity() {
             }
         }
         enterMultiWindow.setOnClickListener {
-
+        }
+        configurationTest.setOnClickListener {
+            startActivity(Intent(this, ConfigurationActivity::class.java))
+        }
+        resourcesTest.setOnClickListener {
+            startActivity(Intent(this, ResourcesActivity::class.java))
         }
     }
 
