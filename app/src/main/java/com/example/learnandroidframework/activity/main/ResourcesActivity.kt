@@ -19,6 +19,7 @@ class ResourcesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_resources)
 
+        iv_left.setImageDrawable(resources.getDrawable(R.drawable.colorDrawable, theme))
 
         test.setOnClickListener {
             testDrawableCache()

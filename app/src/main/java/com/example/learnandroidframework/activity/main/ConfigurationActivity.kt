@@ -3,6 +3,7 @@ package com.example.learnandroidframework.activity.main
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.learnandroidframework.R
@@ -21,10 +22,18 @@ class ConfigurationActivity : AppCompatActivity() {
         localeChange.setOnClickListener {
             val configuration = Configuration(resources.configuration)
             configuration.setLocale(Locale.getDefault())
+            
             val newContext = createConfigurationContext(configuration)
-
             findViewById<TextView>(R.id.tv_text).apply {
                 text = newContext.getText(R.string.app_name)
+            }
+            findViewById<ImageView>(R.id.iv).apply {
+                setImageDrawable(
+                    newContext.resources.getDrawable(
+                        R.drawable.colorDrawable,
+                        newContext.theme
+                    )
+                )
             }
         }
     }
