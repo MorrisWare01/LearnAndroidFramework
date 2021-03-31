@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -47,7 +48,7 @@
                 app:layout_constraintStart_toEndOf="@id/btn_load_scene"
                 app:layout_constraintTop_toTopOf="@id/btn_load_scene" />
 
-            <com.example.learnandroidframework.view.ChessBoardView
+            <com.example.learnandroidframework.view.canvas.ChessBoardView
                 android:id="@+id/chess_board"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -70,15 +71,45 @@
                 app:layout_constraintStart_toEndOf="@id/btn_go"
                 app:layout_constraintTop_toTopOf="@id/btn_go" />
 
-            <com.example.learnandroidframework.view.MainView
+            <com.example.learnandroidframework.view.canvas.MainView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+
     </ScrollView>
 
+    <LinearLayout
+        android:id="@+id/layout_demo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:padding="100dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible">
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="-50dp"
+            android:src="#ff0000" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_show_demo"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginStart="5dp"
+        android:text="显示Demo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

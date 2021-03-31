@@ -1,16 +1,20 @@
 package com.example.learnandroidframework.activity
 
 import android.app.PictureInPictureParams
-import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.learnandroidframework.R
-import com.example.learnandroidframework.activity.main.*
+import com.example.learnandroidframework.activity.main.ConfigurationActivity
+import com.example.learnandroidframework.activity.main.FullscreenActivity
+import com.example.learnandroidframework.activity.main.NewTaskActivity
+import com.example.learnandroidframework.activity.main.ResourcesActivity
 import com.example.learnandroidframework.activity.second.SecondActivity
 import kotlinx.android.synthetic.main.activity_activity_test.*
 
@@ -60,6 +64,19 @@ class ActivityTestActivity : AppCompatActivity() {
         }
         resourcesTest.setOnClickListener {
             startActivity(Intent(this, ResourcesActivity::class.java))
+        }
+        openBrower.setOnClickListener {
+            val url = "https://www.baidu.com"
+
+            // android R以上 需要配置queries
+            val intent = Intent()
+            intent.action = "android.intent.action.VIEW"
+            intent.data = Uri.parse(url)
+            if (intent.resolveActivity(packageManager) != null) {
+                startActivity(Intent.createChooser(intent, "请选择浏览器"))
+            } else {
+                Toast.makeText(this, "没有可用的浏览器", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

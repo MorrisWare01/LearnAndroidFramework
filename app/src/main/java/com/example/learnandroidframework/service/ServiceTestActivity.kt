@@ -49,6 +49,7 @@ class ServiceTestActivity : AppCompatActivity() {
         }
 
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            Log.d("TAG", "aidl onServiceConnected")
             isAidlBound = true
             IMyAidlInterface.Stub.asInterface(service)?.apply {
                 ring()
@@ -120,7 +121,12 @@ class ServiceTestActivity : AppCompatActivity() {
             startService(Intent(this, AidlService::class.java))
         }
         bindAidlService.setOnClickListener {
-            bindService(Intent(this, AidlService::class.java), aidlConn, Context.BIND_AUTO_CREATE)
+//            bindService(Intent(this, AidlService::class.java), aidlConn, Context.BIND_AUTO_CREATE)
+            val intent = Intent().apply {
+                action = "com.test.action"
+                setPackage(packageName)
+            }
+            bindService(intent, aidlConn, Context.BIND_AUTO_CREATE)
         }
         bindAidlServiceOther.setOnClickListener {
             bindService(

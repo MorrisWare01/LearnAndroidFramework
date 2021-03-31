@@ -1,4 +1,4 @@
-package com.example.learnandroidframework.view;
+package com.example.learnandroidframework.view.canvas;
 
 /**
  * Created by mmw on 2020/9/22.

@@ -1,4 +1,4 @@
-package com.example.learnandroidframework.view
+package com.example.learnandroidframework.view.canvas
 
 import android.content.Context
 import android.graphics.*
@@ -27,6 +27,10 @@ class MainView @JvmOverloads constructor(
 //        style = Paint.Style.STROKE
         color = Color.RED
     }
+    private val mTextPaint = Paint().apply {
+        color = Color.BLUE
+        textSize = 50f
+    }
 
     private val mBitmap = BitmapFactory.decodeResource(resources, R.mipmap.dice_build_left_1)
     private val mSrcRect = Rect(0, 0, mBitmap.width, mBitmap.height)
@@ -46,9 +50,9 @@ class MainView @JvmOverloads constructor(
         Log.d(
             "TAG",
             "onMeasure: ${MeasureSpec.toString(widthMeasureSpec)} | ${
-                MeasureSpec.toString(
-                    heightMeasureSpec
-                )
+            MeasureSpec.toString(
+                heightMeasureSpec
+            )
             }"
         )
         setMeasuredDimension(wSize, maxHeight.coerceAtMost(hSize))
@@ -102,6 +106,12 @@ class MainView @JvmOverloads constructor(
 //        canvas.drawBitmap(mBitmap, 0f, 0f, null)
         canvas.drawBitmap(mBitmap, mSrcRect, mDstRect, null)
         canvas.restore()
+
+        canvas.save()
+        canvas.clipRect(10f, 0f, 50f, 200f)
+        canvas.drawText("1234", 0f, 50f, mTextPaint)
+        canvas.restore()
+
     }
 
 }

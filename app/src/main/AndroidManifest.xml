@@ -11,6 +11,14 @@
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+
+            <data android:scheme="https" />
+        </intent>
+    </queries>
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -48,7 +56,7 @@
         <activity
             android:name="com.example.learnandroidframework.activity.main.SingleInstance1Activity"
             android:launchMode="singleInstance" />
-        <activity android:name=".view.ViewActivity" />
+        <activity android:name=".view.canvas.ViewActivity" />
         <activity android:name="com.example.learnandroidframework.activity.main.SaveInstanceTestActivity" />
         <activity android:name=".TestSplashActivity" />
         <activity android:name=".fragment.FragmentTestActivity" />
@@ -84,10 +92,22 @@
         <activity
             android:name=".activity.main.ResourcesActivity"
             android:configChanges="locale" />
+        <activity android:name=".view.ViewTestActivity" />
+        <activity android:name=".view.viewpager.ViewPagerTestActivity" />
 
 
         <service android:name=".service.MainService" />
-        <service android:name=".service.AidlService" />
+        <service
+            android:name=".service.AidlService"
+            android:exported="true"
+            android:process=":test">
+            <intent-filter>
+                <action android:name="com.test.action" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+            </intent-filter>
+        </service>
 
         <receiver android:name=".receiver.MainBroadcastReceiver">
             <intent-filter>

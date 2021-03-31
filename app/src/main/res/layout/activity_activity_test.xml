@@ -62,5 +62,11 @@
             android:layout_height="wrap_content"
             android:text="resourcesTest" />
 
+       <Button
+            android:id="@+id/openBrower"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="openBrower" />
+
     </LinearLayout>
 </ScrollView>

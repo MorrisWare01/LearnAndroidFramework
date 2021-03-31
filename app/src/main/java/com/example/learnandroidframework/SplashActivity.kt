@@ -2,12 +2,10 @@ package com.example.learnandroidframework
 
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
@@ -23,12 +21,12 @@ import com.example.learnandroidframework.dice.DiceActivity
 import com.example.learnandroidframework.fragment.FragmentTestActivity
 import com.example.learnandroidframework.fragment.NavigationTestActivity
 import com.example.learnandroidframework.glide.GlideActivity
-import com.example.learnandroidframework.okhttp.OKHttpActivity
+import com.example.learnandroidframework.lottie.LottieTestActivity
 import com.example.learnandroidframework.provider.ProviderTestActivity
 import com.example.learnandroidframework.receiver.BroadcastReceiverTestActivity
 import com.example.learnandroidframework.service.ServiceTestActivity
 import com.example.learnandroidframework.sharedpreference.SharedPreferenceTestActivity
-import com.example.learnandroidframework.view.ViewActivity
+import com.example.learnandroidframework.view.ViewTestActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class SplashActivity : AppCompatActivity() {
@@ -55,7 +53,7 @@ class SplashActivity : AppCompatActivity() {
             startActivity(Intent(this, SharedPreferenceTestActivity::class.java))
         }
         startViewActivity.setOnClickListener {
-            startActivity(Intent(this, ViewActivity::class.java))
+            startActivity(Intent(this, ViewTestActivity::class.java))
         }
         startDiceActivity.setOnClickListener {
             startActivity(Intent(this, DiceActivity::class.java))
@@ -116,19 +114,19 @@ class SplashActivity : AppCompatActivity() {
             startActivity(Intent(this, NavigationTestActivity::class.java))
         }
         lottieTest.setOnClickListener {
-//            startActivity(Intent(this, LottieTestActivity::class.java))
-            try {
-                val packageName = "com.huawei.hwid"
-                if (isApkInstalled(this, packageName)) {
-                    startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                        data = Uri.parse("package:$packageName")
-                    })
-                } else {
-                    startActivity(Intent(Settings.ACTION_SETTINGS))
-                }
-            } catch (e: Exception) {
-                Log.e("TAG", e.message ?: "")
-            }
+            startActivity(Intent(this, LottieTestActivity::class.java))
+//            try {
+//                val packageName = "com.huawei.hwid"
+//                if (isApkInstalled(this, packageName)) {
+//                    startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+//                        data = Uri.parse("package:$packageName")
+//                    })
+//                } else {
+//                    startActivity(Intent(Settings.ACTION_SETTINGS))
+//                }
+//            } catch (e: Exception) {
+//                Log.e("TAG", e.message ?: "")
+//            }
         }
         Log.d("TAG", Build.MANUFACTURER)
         glideTest.setOnClickListener {

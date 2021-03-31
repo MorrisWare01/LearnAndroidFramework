@@ -1,4 +1,4 @@
-package com.example.learnandroidframework.view
+package com.example.learnandroidframework.view.canvas
 
 import android.graphics.Color
 import android.os.Build
@@ -13,6 +13,8 @@ import com.example.learnandroidframework.R
 /**
  * @author mmw
  * @date 2020/5/8
+ * clipToPadding: 当控件有padding时，设置clipPadding=true时，会调用canvas.clipRect(rect + padding),裁减掉该区域之外的绘制
+ *
  **/
 class ViewActivity : AppCompatActivity() {
 
@@ -82,6 +84,12 @@ class ViewActivity : AppCompatActivity() {
             }
             view.getLocationInWindow(intArray)
             view.getLocationOnScreen(intArray)
+        }
+
+        findViewById<View>(R.id.btn_show_demo).setOnClickListener {
+            findViewById<View>(R.id.layout_demo).apply {
+                visibility = if (visibility == View.VISIBLE) View.GONE else View.VISIBLE
+            }
         }
     }
 

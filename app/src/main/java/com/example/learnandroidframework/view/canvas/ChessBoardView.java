@@ -1,4 +1,4 @@
-package com.example.learnandroidframework.view;
+package com.example.learnandroidframework.view.canvas;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
