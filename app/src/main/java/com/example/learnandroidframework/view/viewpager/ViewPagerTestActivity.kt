@@ -4,18 +4,21 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.PagerAdapter
-import androidx.viewpager.widget.ViewPager
 import com.example.learnandroidframework.R
 import kotlinx.android.synthetic.main.activity_view_pager_test.*
 import kotlin.math.max
-import kotlin.math.min
+import kotlin.random.Random
 
 /**
  * Created by mmw on 2021/3/31.
@@ -37,6 +40,8 @@ class ViewPagerTestActivity : AppCompatActivity() {
             }
             setPadding(0, 0, 0, 0)
             adapter = MyPagerAdapter()
+//            adapter = MyFragmentPagerAdapter()
+//            adapter = MyFragmentStatePagerAdapter()
 //            pageMargin = (context.resources.displayMetrics.density * 10).toInt()
 //            setPageMarginDrawable(ColorDrawable(Color.BLACK))
             setPageTransformer(false) { page, position ->
@@ -151,6 +156,53 @@ class ViewPagerTestActivity : AppCompatActivity() {
         override fun getPageTitle(position: Int): CharSequence? {
             return "title:$position"
         }
+    }
+
+    class MyFragment : Fragment() {
+        override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View? {
+            val context = inflater.context
+            return TextView(context).apply {
+                text = Random.nextInt().toString()
+                textSize = context.resources.displayMetrics.density * 20
+                gravity = Gravity.CENTER
+                background = ColorDrawable(Color.parseColor("#f2f2f2"))
+            }
+        }
+    }
+
+    // attach
+    // deatch
+    inner class MyFragmentPagerAdapter : FragmentPagerAdapter(
+        supportFragmentManager,
+        BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+    ) {
+        override fun getItem(position: Int): Fragment {
+            return MyFragment()
+        }
+
+        override fun getCount(): Int {
+            return 5
+        }
+    }
+
+    // add
+    //remove
+    inner class MyFragmentStatePagerAdapter : FragmentStatePagerAdapter(
+        supportFragmentManager,
+        BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+    ) {
+        override fun getItem(position: Int): Fragment {
+            return MyFragment()
+        }
+
+        override fun getCount(): Int {
+            return 5
+        }
+
     }
 
 }
