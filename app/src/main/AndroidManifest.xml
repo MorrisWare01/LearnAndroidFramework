@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.learnandroidframework">
+    package="com.example.android">
 
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -20,7 +20,7 @@
     </queries>
 
     <application
-        android:name=".App"
+        android:name="com.example.android.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -29,7 +29,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name="com.example.learnandroidframework.SplashActivity"
+            android:name="com.example.android.SplashActivity"
             android:configChanges="screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,67 +38,69 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.ActivityTestActivity"
+            android:name="com.example.android.activity.ActivityTestActivity"
             android:documentLaunchMode="none"
             android:supportsPictureInPicture="true"
             tools:targetApi="n" />
-        <activity android:name=".activity.LaunchTestActivity" />
+        <activity android:name="com.example.android.activity.LaunchTestActivity" />
 
         <activity
-            android:name="com.example.learnandroidframework.activity.second.SecondActivity"
+            android:name="com.example.android.activity.second.SecondActivity"
             android:process=":second" />
         <activity
-            android:name="com.example.learnandroidframework.activity.main.NewTaskActivity"
+            android:name="com.example.android.activity.main.NewTaskActivity"
             android:taskAffinity=":newTask" />
         <activity
-            android:name="com.example.learnandroidframework.activity.main.SingleInstanceActivity"
+            android:name="com.example.android.activity.main.SingleInstanceActivity"
             android:launchMode="singleInstance" />
         <activity
-            android:name="com.example.learnandroidframework.activity.main.SingleInstance1Activity"
+            android:name="com.example.android.activity.main.SingleInstance1Activity"
             android:launchMode="singleInstance" />
-        <activity android:name=".view.canvas.ViewActivity" />
-        <activity android:name="com.example.learnandroidframework.activity.main.SaveInstanceTestActivity" />
-        <activity android:name=".TestSplashActivity" />
-        <activity android:name=".fragment.FragmentTestActivity" />
-        <activity android:name=".fragment.NavigationTestActivity" />
-        <activity android:name=".provider.ProviderTestActivity" />
-        <activity android:name=".receiver.BroadcastReceiverTestActivity" />
-        <activity android:name=".service.ServiceTestActivity" />
-        <activity android:name=".sharedpreference.SharedPreferenceTestActivity" />
+        <activity android:name="com.example.android.view.canvas.ViewActivity" />
+        <activity android:name="com.example.android.activity.main.SaveInstanceTestActivity" />
+        <activity android:name="com.example.android.TestSplashActivity" />
+        <activity android:name="com.example.android.fragment.FragmentTestActivity" />
+        <activity android:name="com.example.android.fragment.NavigationTestActivity" />
+        <activity android:name="com.example.android.provider.ProviderTestActivity" />
+        <activity android:name="com.example.android.receiver.BroadcastReceiverTestActivity" />
+        <activity android:name="com.example.android.service.ServiceTestActivity" />
+        <activity android:name="com.example.android.sharedpreference.SharedPreferenceTestActivity" />
         <activity
-            android:name=".activity.main.SingleTopActivity"
+            android:name="com.example.android.activity.main.SingleTopActivity"
             android:launchMode="singleTop" />
         <activity
-            android:name=".activity.main.SingleTaskActivity"
+            android:name="com.example.android.activity.main.SingleTaskActivity"
             android:allowTaskReparenting="true"
             android:alwaysRetainTaskState="true"
             android:clearTaskOnLaunch="true"
             android:finishOnTaskLaunch="true"
             android:launchMode="singleTask" />
         <activity
-            android:name=".activity.second.OtherSingleTaskActivity"
+            android:name="com.example.android.activity.second.OtherSingleTaskActivity"
             android:launchMode="singleTask"
             android:taskAffinity=":other" />
         <activity
-            android:name=".dice.DiceActivity"
+            android:name="com.example.android.dice.DiceActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".lottie.LottieTestActivity" />
-        <activity android:name=".glide.GlideActivity" />
-        <activity android:name=".okhttp.OKHttpActivity" />
+        <activity android:name="com.example.android.lottie.LottieTestActivity" />
+        <activity android:name="com.example.android.glide.GlideActivity" />
+        <activity android:name="com.example.android.okhttp.OKHttpActivity" />
         <activity
-            android:name=".activity.main.FullscreenActivity"
+            android:name="com.example.android.activity.main.FullscreenActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".activity.main.ConfigurationActivity" />
+        <activity android:name="com.example.android.activity.main.ConfigurationActivity" />
         <activity
-            android:name=".activity.main.ResourcesActivity"
+            android:name="com.example.android.activity.main.ResourcesActivity"
             android:configChanges="locale" />
-        <activity android:name=".view.ViewTestActivity" />
-        <activity android:name=".view.viewpager.ViewPagerTestActivity" />
+        <activity android:name="com.example.android.view.ViewTestActivity" />
+        <activity android:name="com.example.android.view.viewpager.ViewPagerTestActivity" />
+        <activity android:name="com.example.android.view.recyclerview.RecyclerViewTestActivity" />
+        <activity android:name="com.example.android.native.NativeTestActivity" />
 
 
-        <service android:name=".service.MainService" />
+        <service android:name="com.example.android.service.MainService" />
         <service
-            android:name=".service.AidlService"
+            android:name="com.example.android.service.AidlService"
             android:exported="true"
             android:process=":test">
             <intent-filter>
@@ -109,17 +111,17 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".receiver.MainBroadcastReceiver">
+        <receiver android:name="com.example.android.receiver.MainBroadcastReceiver">
             <intent-filter>
                 <action android:name="com.example.receiver" />
             </intent-filter>
         </receiver>
 
         <provider
-            android:name=".provider.MainContentProvider"
+            android:name="com.example.android.provider.MainContentProvider"
             android:authorities="com.example.provider" />
         <provider
-            android:name=".provider.MoreContentProvider"
+            android:name="com.example.android.provider.MoreContentProvider"
             android:authorities="com.example.provider1;com.example.provider2;com.example.provider3" />
         <provider
             android:name="androidx.core.content.FileProvider"

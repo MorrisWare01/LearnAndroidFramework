@@ -6,14 +6,12 @@ JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *reserved) {
         return -1;
     }
 
-//    env->FindClass("android.os.BinderProxy")
-
+    return JNI_VERSION_1_6;
 }
 
-extern "C"
-JNIEXPORT jlong JNICALL
-Java_com_example_learnandroidframework_native_Native_getBinderProxyHandle(JNIEnv *env,
-                                                                          jobject thiz,
-                                                                          jobject binder) {
-    return 0;
+extern "C" JNIEXPORT jint JNICALL
+Java_com_example_android_native_Native_getData(JNIEnv *env, jclass _) {
+    jclass nativeClazz = env->FindClass("com/example/android/native/Native");
+    jfieldID nativeDataField = env->GetStaticFieldID(nativeClazz, "data", "I");
+    return env->GetStaticIntField(nativeClazz, nativeDataField);
 }

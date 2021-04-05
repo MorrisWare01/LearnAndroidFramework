@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.example.learnandroidframework.dice.DiceView
+        <com.example.android.dice.DiceView
             android:id="@+id/dice_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

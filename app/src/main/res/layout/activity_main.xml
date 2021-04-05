@@ -112,6 +112,12 @@
             android:layout_height="wrap_content"
             android:text="configurationTest" />
 
+        <Button
+            android:id="@+id/nativeTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="nativeTest" />
+
 
     </LinearLayout>
 </ScrollView>

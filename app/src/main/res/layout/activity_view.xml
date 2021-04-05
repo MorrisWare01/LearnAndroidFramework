@@ -48,7 +48,7 @@
                 app:layout_constraintStart_toEndOf="@id/btn_load_scene"
                 app:layout_constraintTop_toTopOf="@id/btn_load_scene" />
 
-            <com.example.learnandroidframework.view.canvas.ChessBoardView
+            <com.example.android.view.canvas.ChessBoardView
                 android:id="@+id/chess_board"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
                 app:layout_constraintStart_toEndOf="@id/btn_go"
                 app:layout_constraintTop_toTopOf="@id/btn_go" />
 
-            <com.example.learnandroidframework.view.canvas.MainView
+            <com.example.android.view.canvas.MainView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent" />
