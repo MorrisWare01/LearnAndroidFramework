@@ -85,6 +85,13 @@ class GlideActivity : AppCompatActivity() {
             })
             image.setImageBitmap(bitmap)
         }
+        btn_cache_is.setOnClickListener {
+            Glide.with(image)
+                .load("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fattach.bbs.miui.com%2Fforum%2F201304%2F25%2F195133e7a1l7b4f5117y4y.jpg&refer=http%3A%2F%2Fattach.bbs.miui.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1615022557&t=01424b93c6e1c9637c6037c2ffa7a111")
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(image)
+        }
 
         supportFragmentManager.beginTransaction()
             .add(R.id.container, GlideFragment(), "tag")

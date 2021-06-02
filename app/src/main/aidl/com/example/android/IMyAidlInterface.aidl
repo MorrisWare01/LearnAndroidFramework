@@ -7,5 +7,5 @@ import android.os.IBinder;
 interface IMyAidlInterface {
     void publishBinder(IBinder binder);
 
-    void ring();
+    oneway void ring();
 }

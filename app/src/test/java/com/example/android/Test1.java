@@ -4,7 +4,7 @@ package com.example.android;
  * @author mmw
  * @date 2020/4/23
  **/
-public class Test {
+public class Test1 {
 
     @org.junit.Test
     public void test() {

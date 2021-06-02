@@ -20,6 +20,7 @@ import com.example.android.activity.ActivityTestActivity
 import com.example.android.dice.DiceActivity
 import com.example.android.fragment.FragmentTestActivity
 import com.example.android.fragment.NavigationTestActivity
+import com.example.android.gc.GcTestActivity
 import com.example.android.glide.GlideActivity
 import com.example.android.lottie.LottieTestActivity
 import com.example.android.native.NativeTestActivity
@@ -27,6 +28,7 @@ import com.example.android.provider.ProviderTestActivity
 import com.example.android.receiver.BroadcastReceiverTestActivity
 import com.example.android.service.ServiceTestActivity
 import com.example.android.sharedpreference.SharedPreferenceTestActivity
+import com.example.android.state.StateTestActivity
 import com.example.android.view.ViewTestActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -147,6 +149,12 @@ class SplashActivity : AppCompatActivity() {
         }
         nativeTest.setOnClickListener {
             startActivity(Intent(this, NativeTestActivity::class.java))
+        }
+        doGcTest.setOnClickListener {
+            startActivity(Intent(this, GcTestActivity::class.java))
+        }
+        stateTest.setOnClickListener {
+            startActivity(Intent(this, StateTestActivity::class.java))
         }
     }
 

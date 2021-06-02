@@ -96,6 +96,11 @@
         <activity android:name="com.example.android.view.viewpager.ViewPagerTestActivity" />
         <activity android:name="com.example.android.view.recyclerview.RecyclerViewTestActivity" />
         <activity android:name="com.example.android.native.NativeTestActivity" />
+        <activity android:name=".view.lifecycle.ViewLifecycleActivity" />
+        <activity android:name=".gc.GcTestActivity" />
+        <activity android:name=".view.AnimationTestActivity" />
+        <activity android:name=".state.StateTest1Activity" />
+        <activity android:name=".state.StateTestActivity" />
 
 
         <service android:name="com.example.android.service.MainService" />
@@ -116,6 +121,7 @@
                 <action android:name="com.example.receiver" />
             </intent-filter>
         </receiver>
+        <receiver android:name=".receiver.AnrBroadcastReceiver" />
 
         <provider
             android:name="com.example.android.provider.MainContentProvider"

@@ -39,8 +39,8 @@ class ViewPagerTestActivity : AppCompatActivity() {
                 params.rightMargin = margin
             }
             setPadding(0, 0, 0, 0)
-            adapter = MyPagerAdapter()
-//            adapter = MyFragmentPagerAdapter()
+//            adapter = MyPagerAdapter()
+            adapter = MyFragmentPagerAdapter()
 //            adapter = MyFragmentStatePagerAdapter()
 //            pageMargin = (context.resources.displayMetrics.density * 10).toInt()
 //            setPageMarginDrawable(ColorDrawable(Color.BLACK))

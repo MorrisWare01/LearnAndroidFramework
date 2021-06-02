@@ -15,5 +15,8 @@ object Native {
     @JvmStatic
     external fun getData(): Int
 
+    @JvmStatic
+    external fun test()
+
 }
 

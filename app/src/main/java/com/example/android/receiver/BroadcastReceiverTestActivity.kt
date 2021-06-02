@@ -37,6 +37,9 @@ class BroadcastReceiverTestActivity : AppCompatActivity() {
             receiver = RegisterBroadcastReceiver()
             registerReceiver(receiver, IntentFilter("com.example.data"))
         }
+        anrBroadcast.setOnClickListener {
+            sendBroadcast(Intent(this, AnrBroadcastReceiver::class.java))
+        }
     }
 
     override fun onDestroy() {
